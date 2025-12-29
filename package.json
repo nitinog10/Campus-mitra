@@ -1,0 +1,23 @@
+{
+  "name": "campusmitra",
+  "private": true,
+  "workspaces": [
+    "frontend",
+    "backend",
+    "ai_pipeline",
+    "telegram-bot"
+  ],
+  "scripts": {
+    "dev": "node scripts/start-dev.js",
+    "dev:all": "concurrently \"yarn workspace frontend run dev\" \"yarn workspace backend run dev\" \"yarn workspace ai_pipeline run dev\" \"yarn workspace telegram-bot run dev\"",
+    "dev:legacy": "concurrently \"yarn workspace frontend run dev\" \"yarn workspace backend run dev\" \"yarn workspace ai_pipeline run dev\"",
+    "telegram-bot": "yarn workspace telegram-bot run start",
+    "telegram-bot:dev": "yarn workspace telegram-bot run dev"
+  },
+  "devDependencies": {
+    "concurrently": "^9.0.0"
+  },
+  "dependencies": {
+    "vite": "^7.1.4"
+  }
+}

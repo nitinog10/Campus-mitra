@@ -1,0 +1,10 @@
+{
+  "name": "ai_pipeline",
+  "private": true,
+  "version": "0.0.1",
+  "main": "main.py",
+  "scripts": {
+    "dev": "uvicorn main:app --reload --host 0.0.0.0 --port 8001",
+    "start": "uvicorn main:app --host 0.0.0.0 --port 8001"
+  }
+}

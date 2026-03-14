@@ -1,32 +1,20 @@
-
+```python
 # Import necessary libraries
 import streamlit as st
 from openai import OpenAI
 from brain import get_index_for_pdf
 import os
+from utils import load_openai_key
 
 # Set the title for the Streamlit app
 st.title("RAG Chatbot")
 
-def _load_openai_key():
-    key = None
-    # Prefer Streamlit secrets if available
-    try:
-        key = st.secrets.get("OPENAI_API_KEY")
-    except Exception:
-        key = None
-    # Fallback to env var
-    if not key:
-        key = os.environ.get("OPENAI_API_KEY")
-    return key
-
-OPENAI_API_KEY = _load_openai_key()
+OPENAI_API_KEY = load_openai_key()
 if not OPENAI_API_KEY:
-    st.error("OPENAI_API_KEY not set. Add it to .streamlit/secrets.toml or env.")
+    st.error("OPENAI_API_KEY not set. Add it to.streamlit/secrets.toml or env.")
     st.stop()
 
 client = OpenAI(api_key=OPENAI_API_KEY)
-
 
 # Cached function to create a vectordb for the provided PDF files
 # Use cache_resource because FAISS index is not pickle-serializable
@@ -38,7 +26,6 @@ def create_vectordb(files, filenames):
             [file.getvalue() for file in files], filenames, OPENAI_API_KEY
         )
     return vectordb
-
 
 # Upload PDF files using Streamlit's file uploader
 pdf_files = st.file_uploader("", type="pdf", accept_multiple_files=True)
@@ -71,7 +58,7 @@ prompt = st.session_state.get("prompt", [{"role": "system", "content": "none"}])
 
 # Display previous chat messages
 for message in prompt:
-    if message["role"] != "system":
+    if message["role"]!= "system":
         with st.chat_message(message["role"]):
             st.write(message["content"])
 
@@ -88,7 +75,6 @@ if question:
 
     # Search the vectordb for similar content to the user's question
     search_results = vectordb.similarity_search(question, k=3)
-    # search_results
     pdf_extract = "\n ".join([result.page_content for result in search_results])
 
     # Update the prompt with the pdf extract
@@ -125,3 +111,23 @@ if question:
 
     # Store the updated prompt in the session state
     st.session_state["prompt"] = prompt
+```
+
+```python
+# utils.py
+
+import os
+import streamlit as st
+
+def load_openai_key():
+    key = None
+    # Prefer Streamlit secrets if available
+    try:
+        key = st.secrets.get("OPENAI_API_KEY")
+    except Exception:
+        key = None
+    # Fallback to env var
+    if not key:
+        key = os.environ.get("OPENAI_API_KEY")
+    return key
+```

@@ -1,38 +1,14 @@
+```javascript
 import { Document, Conversation } from "../models/index.js";
 import axios from "axios";
 import fs from "fs";
 import path from "path";
+import { truncateMessage, ensureUploadsDir } from "../utils/index.js";
 
 const AI_PIPELINE_URL = process.env.AI_PIPELINE_URL || "http://localhost:8001";
 const MOCK_MODE = process.env.MOCK_AI_PIPELINE === "true";
 
-// Helper function to safely truncate messages
-const truncateMessage = (text, maxLength = 4500) => {
-  if (!text || text.length <= maxLength) return text;
-
-  // Try to truncate at a sentence boundary
-  const truncated = text.substring(0, maxLength);
-  const lastPeriod = truncated.lastIndexOf(".");
-  const lastNewline = truncated.lastIndexOf("\n");
-
-  const cutPoint = Math.max(lastPeriod, lastNewline);
-
-  if (cutPoint > maxLength * 0.8) {
-    return (
-      truncated.substring(0, cutPoint + 1) +
-      "\n\n[Response truncated due to length limit]"
-    );
-  }
-
-  return truncated + "...\n\n[Response truncated due to length limit]";
-};
-
-
-// Ensure uploads directory exists
-const uploadsDir = path.join(process.cwd(), "uploads");
-if (!fs.existsSync(uploadsDir)) {
-  fs.mkdirSync(uploadsDir, { recursive: true });
-}
+ensureUploadsDir();
 
 // Upload document to AI pipeline and save to database
 export const uploadDocumentToAI = async (file, title, uploadedBy) => {
@@ -156,8 +132,8 @@ export const uploadDocumentToAI = async (file, title, uploadedBy) => {
 export const getIndexedDocuments = async () => {
   try {
     const documents = await Document.find()
-      .populate("uploadedBy", "username")
-      .sort({ uploadDate: -1 });
+     .populate("uploadedBy", "username")
+     .sort({ uploadDate: -1 });
 
     return {
       success: true,
@@ -288,8 +264,8 @@ export const askQuestion = async (question, sessionId, userIp, userAgent) => {
 
       // Search across all documents using the multiple document search endpoint
       const documentIds = allDocuments
-        .map((doc) => doc.aiPipelineId)
-        .filter((id) => id);
+       .map((doc) => doc.aiPipelineId)
+       .filter((id) => id);
 
       const response = await axios.post(
         `${AI_PIPELINE_URL}/api/chat/search-multiple`,
@@ -435,7 +411,7 @@ export const askQuestionWithDocument = async (
       throw new Error("Document not found");
     }
 
-    if (document.status !== "indexed") {
+    if (document.status!== "indexed") {
       throw new Error("Document is not yet indexed and ready for queries");
     }
 
@@ -620,204 +596,4 @@ export const askQuestionWithMultipleDocuments = async (
       };
 
       conversation.messages.push(errorMessage);
-      await conversation.save();
-
-      return {
-        success: true,
-        response: errorMessage.text,
-        content_type: "markdown", // Add content_type for error responses
-        sources: [],
-        conversationId: conversation._id,
-        documentsUsed: [],
-      };
-    }
-  } catch (error) {
-    console.error("Ask question with multiple documents error:", error);
-    throw error;
-  }
-};
-
-// Check document processing status from AI pipeline
-export const checkDocumentStatus = async (documentId) => {
-  try {
-    const document = await Document.findById(documentId);
-    if (!document) {
-      throw new Error("Document not found");
-    }
-
-    if (!document.aiPipelineId) {
-      return {
-        success: true,
-        status: document.status,
-        message: "Document not yet sent to AI pipeline",
-      };
-    }
-
-    // Handle mock IDs - don't try to query the AI pipeline
-    if (document.aiPipelineId.startsWith("mock_")) {
-      return {
-        success: true,
-        status: document.status,
-        message:
-          "Document was processed in mock mode. Re-upload with proper API configuration.",
-        document: {
-          id: document._id,
-          title: document.title,
-          filename: document.originalName,
-          status: document.status,
-          uploadedAt: document.uploadDate,
-        },
-      };
-    }
-
-    try {
-      const response = await axios.get(
-        `${AI_PIPELINE_URL}/api/documents/status/${document.aiPipelineId}`,
-        { timeout: 10000 }
-      );
-
-      return {
-        success: true,
-        status: document.status,
-        aiPipelineStatus: response.data.message,
-        document: {
-          id: document._id,
-          title: document.title,
-          filename: document.originalName,
-          status: document.status,
-          uploadedAt: document.uploadDate,
-        },
-      };
-    } catch (aiError) {
-      console.error("AI Pipeline status check error:", aiError);
-      return {
-        success: true,
-        status: document.status,
-        aiPipelineStatus: "Unable to check AI pipeline status",
-        document: {
-          id: document._id,
-          title: document.title,
-          filename: document.originalName,
-          status: document.status,
-          uploadedAt: document.uploadDate,
-        },
-      };
-    }
-  } catch (error) {
-    console.error("Check document status error:", error);
-    throw error;
-  }
-};
-
-// Delete document from both database and AI pipeline
-export const deleteDocument = async (documentId) => {
-  try {
-    const document = await Document.findById(documentId);
-    if (!document) {
-      throw new Error("Document not found");
-    }
-
-    // Delete from AI pipeline if it has an aiPipelineId (but not if it's a mock ID)
-    if (document.aiPipelineId && !document.aiPipelineId.startsWith("mock_")) {
-      try {
-        await axios.delete(
-          `${AI_PIPELINE_URL}/api/documents/${document.aiPipelineId}`,
-          { timeout: 10000 }
-        );
-      } catch (aiError) {
-        console.error("AI Pipeline delete error:", aiError);
-        // Continue with database deletion even if AI pipeline deletion fails
-      }
-    }
-
-    // Delete local file if it exists
-    if (document.filePath && fs.existsSync(document.filePath)) {
-      fs.unlinkSync(document.filePath);
-    }
-
-    // Delete from database
-    await Document.findByIdAndDelete(documentId);
-
-    return {
-      success: true,
-      message: "Document deleted successfully",
-    };
-  } catch (error) {
-    console.error("Delete document error:", error);
-    throw error;
-  }
-};
-
-// Webhook endpoint for AI pipeline to update document status
-export const updateDocumentStatus = async (
-  documentId,
-  status,
-  aiPipelineId,
-  errorMessage = null
-) => {
-  try {
-    const updateData = {
-      status,
-      lastUpdated: new Date(),
-    };
-
-    if (aiPipelineId) {
-      updateData.aiPipelineId = aiPipelineId;
-    }
-
-    if (errorMessage) {
-      updateData.errorMessage = errorMessage;
-    }
-
-    const document = await Document.findByIdAndUpdate(documentId, updateData, {
-      new: true,
-    });
-
-    if (!document) {
-      throw new Error("Document not found");
-    }
-
-    return { success: true, document };
-  } catch (error) {
-    console.error("Update document status error:", error);
-    throw error;
-  }
-};
-
-// Clean up documents with mock IDs or failed processing
-export const cleanupMockDocuments = async () => {
-  try {
-    const mockDocuments = await Document.find({
-      $or: [
-        { aiPipelineId: { $regex: /^mock_/ } },
-        { status: "pending_api_key" },
-        { status: "failed" },
-      ],
-    });
-
-    let deletedCount = 0;
-    for (const doc of mockDocuments) {
-      // Delete local file if it exists
-      if (doc.filePath && fs.existsSync(doc.filePath)) {
-        try {
-          fs.unlinkSync(doc.filePath);
-        } catch (fileError) {
-          console.error(`Error deleting file ${doc.filePath}:`, fileError);
-        }
-      }
-
-      // Delete from database
-      await Document.findByIdAndDelete(doc._id);
-      deletedCount++;
-    }
-
-    return {
-      success: true,
-      message: `Cleaned up ${deletedCount} documents`,
-      deletedCount,
-    };
-  } catch (error) {
-    console.error("Cleanup mock documents error:", error);
-    throw error;
-  }
-};
+     

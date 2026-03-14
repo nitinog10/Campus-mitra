@@ -1,3 +1,4 @@
+```
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import {
@@ -22,12 +23,15 @@ import {
   CardHeader,
   CardTitle,
 } from "../components/ui/card.jsx";
+import { useAnalytics } from "../hooks/useAnalytics";
 
 const ChatbotView = () => {
   const navigate = useNavigate();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const { trackEvent } = useAnalytics();
 
   const handleAdminLogin = () => {
+    trackEvent("Admin Login Clicked");
     navigate("/login");
   };
 
@@ -63,30 +67,35 @@ const ChatbotView = () => {
                 <a
                   href="#home"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+                  onClick={() => trackEvent("Home Link Clicked")}
                 >
                   Home
                 </a>
                 <a
                   href="#academics"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+                  onClick={() => trackEvent("Academics Link Clicked")}
                 >
                   Academics
                 </a>
                 <a
                   href="#admissions"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+                  onClick={() => trackEvent("Admissions Link Clicked")}
                 >
                   Admissions
                 </a>
                 <a
                   href="#students"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+                  onClick={() => trackEvent("Students Link Clicked")}
                 >
                   Students
                 </a>
                 <a
                   href="#contact"
                   className="text-gray-600 hover:text-blue-600 transition-colors font-medium"
+                  onClick={() => trackEvent("Contact Link Clicked")}
                 >
                   Contact
                 </a>
@@ -126,35 +135,50 @@ const ChatbotView = () => {
                 <a
                   href="#home"
                   className="block text-gray-600 hover:text-blue-600 transition-colors font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    trackEvent("Mobile Home Link Clicked");
+                  }}
                 >
                   Home
                 </a>
                 <a
                   href="#academics"
                   className="block text-gray-600 hover:text-blue-600 transition-colors font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    trackEvent("Mobile Academics Link Clicked");
+                  }}
                 >
                   Academics
                 </a>
                 <a
                   href="#admissions"
                   className="block text-gray-600 hover:text-blue-600 transition-colors font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    trackEvent("Mobile Admissions Link Clicked");
+                  }}
                 >
                   Admissions
                 </a>
                 <a
                   href="#students"
                   className="block text-gray-600 hover:text-blue-600 transition-colors font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    trackEvent("Mobile Students Link Clicked");
+                  }}
                 >
                   Students
                 </a>
                 <a
                   href="#contact"
                   className="block text-gray-600 hover:text-blue-600 transition-colors font-medium py-2"
-                  onClick={() => setIsMobileMenuOpen(false)}
+                  onClick={() => {
+                    setIsMobileMenuOpen(false);
+                    trackEvent("Mobile Contact Link Clicked");
+                  }}
                 >
                   Contact
                 </a>
@@ -198,11 +222,12 @@ const ChatbotView = () => {
               <Button
                 size="lg"
                 className="bg-gradient-to-r from-blue-600 to-purple-600 hover:from-blue-700 hover:to-purple-700 text-white px-8 py-3 text-lg"
-                onClick={() =>
+                onClick={() => {
                   document
-                    .querySelector(".fixed.bottom-6.right-6 button")
-                    .click()
-                }
+                   .querySelector(".fixed.bottom-6.right-6 button")
+                    .click();
+                  trackEvent("Start Chatting Button Clicked");
+                }}
               >
                 <MessageSquare className="mr-2 h-5 w-5" />
                 Start Chatting with AI
@@ -391,127 +416,10 @@ const ChatbotView = () => {
             <Button
               size="lg"
               className="bg-white text-blue-600 hover:bg-gray-100 px-8 py-3 text-lg font-semibold"
-              onClick={() =>
-                document.querySelector(".fixed.bottom-6.right-6 button").click()
-              }
+              onClick={() => {
+                document.querySelector(".fixed.bottom-6.right-6 button").click();
+                trackEvent("Try AI Assistant Button Clicked");
+              }}
             >
               <MessageSquare className="mr-2 h-5 w-5" />
-              Try the AI Assistant Now
-            </Button>
-            <p className="text-blue-100 text-sm">
-              Available 24/7 • No registration required
-            </p>
-          </div>
-
-          {/* Floating Arrow */}
-          <div className="mt-8 flex justify-center">
-            <div className="animate-bounce">
-              <svg
-                className="w-8 h-8 text-blue-200"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M19 14l-7 7m0 0l-7-7m7 7V3"
-                />
-              </svg>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* Footer */}
-      <footer id="contact" className="bg-gray-900 text-white py-12">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="col-span-1 md:col-span-2">
-              <div className="flex items-center space-x-3 mb-4">
-                <div className="w-8 h-8 bg-gradient-to-br from-blue-500 to-purple-500 rounded-lg flex items-center justify-center">
-                  <GraduationCap className="h-5 w-5 text-white" />
-                </div>
-                <h4 className="text-xl font-bold">CampusMitra</h4>
-              </div>
-              <p className="text-gray-400 mb-4 max-w-md">
-                Empowering students with AI-driven assistance for a seamless
-                university experience. Get instant answers, stay informed, and
-                excel in your academic journey.
-              </p>
-            </div>
-
-            <div>
-              <h5 className="font-semibold mb-4">Quick Links</h5>
-              <ul className="space-y-2 text-gray-400">
-                <li>
-                  <a
-                    href="#home"
-                    className="hover:text-white transition-colors"
-                  >
-                    Home
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#academics"
-                    className="hover:text-white transition-colors"
-                  >
-                    Academics
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#admissions"
-                    className="hover:text-white transition-colors"
-                  >
-                    Admissions
-                  </a>
-                </li>
-                <li>
-                  <a
-                    href="#students"
-                    className="hover:text-white transition-colors"
-                  >
-                    Students
-                  </a>
-                </li>
-              </ul>
-            </div>
-
-            <div>
-              <h5 className="font-semibold mb-4">Contact</h5>
-              <ul className="space-y-2 text-gray-400">
-                <li className="flex items-center">
-                  <Phone className="h-4 w-4 mr-2" />
-                  +1 (555) 123-4567
-                </li>
-                <li className="flex items-center">
-                  <Mail className="h-4 w-4 mr-2" />
-                  support@campusmitra.edu
-                </li>
-                <li className="flex items-center">
-                  <MapPin className="h-4 w-4 mr-2" />
-                  123 University Ave
-                </li>
-              </ul>
-            </div>
-          </div>
-
-          <div className="border-t border-gray-800 mt-8 pt-8 text-center text-gray-400">
-            <p>
-              &copy; 2024 CampusMitra. All rights reserved. Powered by AI for
-              better student experience.
-            </p>
-          </div>
-        </div>
-      </footer>
-
-      {/* Chat Widget */}
-      <ChatWidget />
-    </div>
-  );
-};
-
-export default ChatbotView;
+             

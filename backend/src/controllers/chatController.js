@@ -1,26 +1,27 @@
+```
 import {
   askQuestion,
   addMessageToConversation,
   askQuestionWithDocument,
   askQuestionWithMultipleDocuments,
 } from "../services/aiProxyService.js";
-import { Conversation } from "../models/index.js";
+import { Conversation, Document } from "../models/index.js";
 import { body, validationResult } from "express-validator";
+import { generateSessionId, getRemoteAddress, getUserAgent } from "../utils/requestUtils.js";
 
 // Validation rules for chat question
 export const validateQuestion = [
   body("question")
-    .trim()
-    .notEmpty()
-    .withMessage("Question is required")
-    .isLength({ min: 2, max: 1000 })
+   .trim()
+   .notEmpty()
+   .withMessage("Question is required")
+   .isLength({ min: 2, max: 1000 })
     .withMessage("Question must be between 2 and 1000 characters"),
 ];
 
 // Ask question controller with conversation tracking
 export const ask = async (req, res) => {
   try {
-    // Check validation results
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -31,23 +32,16 @@ export const ask = async (req, res) => {
     }
 
     const { question, conversationId } = req.body;
-    const sessionId =
-      req.sessionID || req.headers["x-session-id"] || `session_${Date.now()}`;
-    const userIp = req.ip || req.connection.remoteAddress;
-    const userAgent = req.get("User-Agent");
+    const sessionId = generateSessionId(req);
+    const userIp = getRemoteAddress(req);
+    const userAgent = getUserAgent(req);
 
     let result;
 
-    // First, try to find ALL available indexed documents to use for context
     try {
-      const { Document } = await import("../models/index.js");
-      const availableDocuments = await Document.find({
-        status: "indexed",
-      }).sort({ uploadDate: -1 }); // Get all indexed documents
-
+      const availableDocuments = await Document.find({ status: "indexed" }).sort({ uploadDate: -1 });
       if (availableDocuments.length > 0) {
         try {
-          // Use multi-document search if we have indexed documents
           result = await askQuestionWithMultipleDocuments(
             question,
             availableDocuments.map((doc) => doc._id),
@@ -55,11 +49,10 @@ export const ask = async (req, res) => {
             userIp,
             userAgent
           );
-
           return res.status(200).json({
             success: true,
             response: result.response,
-            content_type: result.content_type || "markdown", // Forward content_type
+            content_type: result.content_type || "markdown",
             sources: result.sources,
             topSourceSuggestions: result.top_source_suggestions || [],
             conversationId: result.conversationId,
@@ -68,42 +61,31 @@ export const ask = async (req, res) => {
             timestamp: new Date().toISOString(),
           });
         } catch (multiDocError) {
-          console.error(
-            "Multi-document search failed, falling back to general chat:",
-            multiDocError
-          );
-          // Continue to general chat fallback below
+          console.error("Multi-document search failed, falling back to general chat:", multiDocError);
         }
       }
     } catch (docError) {
-      // No indexed documents available, continue with general chat
+      console.error("Error fetching indexed documents:", docError);
     }
 
     if (conversationId) {
-      // Try to continue existing conversation, fallback to new conversation if not found
       try {
-        result = await addMessageToConversation(
-          conversationId,
-          question,
-          sessionId
-        );
+        result = await addMessageToConversation(conversationId, question, sessionId);
       } catch (error) {
         if (error.message.includes("Conversation not found")) {
-          // Fallback: start new conversation
           result = await askQuestion(question, sessionId, userIp, userAgent);
         } else {
           throw error;
         }
       }
     } else {
-      // Start new conversation
       result = await askQuestion(question, sessionId, userIp, userAgent);
     }
 
     res.status(200).json({
       success: true,
       response: result.response,
-      content_type: result.content_type || "markdown", // Forward content_type
+      content_type: result.content_type || "markdown",
       sources: result.sources,
       topSourceSuggestions: result.top_source_suggestions || [],
       conversationId: result.conversationId,
@@ -123,7 +105,6 @@ export const ask = async (req, res) => {
 // Ask question about specific document
 export const askAboutDocument = async (req, res) => {
   try {
-    // Check validation results
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       return res.status(400).json({
@@ -134,10 +115,9 @@ export const askAboutDocument = async (req, res) => {
     }
 
     const { question, documentId } = req.body;
-    const sessionId =
-      req.sessionID || req.headers["x-session-id"] || `session_${Date.now()}`;
-    const userIp = req.ip || req.connection.remoteAddress;
-    const userAgent = req.get("User-Agent");
+    const sessionId = generateSessionId(req);
+    const userIp = getRemoteAddress(req);
+    const userAgent = getUserAgent(req);
 
     if (!documentId) {
       return res.status(400).json({
@@ -146,18 +126,12 @@ export const askAboutDocument = async (req, res) => {
       });
     }
 
-    const result = await askQuestionWithDocument(
-      question,
-      documentId,
-      sessionId,
-      userIp,
-      userAgent
-    );
+    const result = await askQuestionWithDocument(question, documentId, sessionId, userIp, userAgent);
 
     res.status(200).json({
       success: true,
       response: result.response,
-      content_type: result.content_type || "markdown", // Forward content_type
+      content_type: result.content_type || "markdown",
       sources: result.sources,
       topSourceSuggestions: result.top_source_suggestions || [],
       conversationId: result.conversationId,
@@ -169,8 +143,7 @@ export const askAboutDocument = async (req, res) => {
     console.error("Document chat error:", error);
     res.status(500).json({
       success: false,
-      message:
-        error.message || "Server error while processing document question",
+      message: error.message || "Server error while processing document question",
     });
   }
 };
@@ -184,9 +157,9 @@ export const getConversations = async (req, res) => {
 
     const conversations = await Conversation.find({ isActive: true })
       .select("sessionId startTime lastActivity messages userIp")
-      .sort({ lastActivity: -1 })
-      .skip(skip)
-      .limit(limit);
+     .sort({ lastActivity: -1 })
+     .skip(skip)
+     .limit(limit);
 
     const total = await Conversation.countDocuments({ isActive: true });
 
@@ -196,10 +169,7 @@ export const getConversations = async (req, res) => {
       startTime: conv.startTime,
       lastActivity: conv.lastActivity,
       messageCount: conv.messages.length,
-      lastMessage:
-        conv.messages.length > 0
-          ? conv.messages[conv.messages.length - 1].text.substring(0, 100)
-          : "",
+      lastMessage: conv.messages.length > 0? conv.messages[conv.messages.length - 1].text.substring(0, 100) : "",
       userIp: conv.userIp,
     }));
 
@@ -282,3 +252,4 @@ export const deleteConversation = async (req, res) => {
     });
   }
 };
+```

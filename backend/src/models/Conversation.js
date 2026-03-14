@@ -1,3 +1,4 @@
+```javascript
 import mongoose from "mongoose";
 
 const messageSchema = new mongoose.Schema({
@@ -57,11 +58,9 @@ const conversationSchema = new mongoose.Schema(
   }
 );
 
-// Index for efficient queries (sessionId already has unique index)
 conversationSchema.index({ startTime: -1 });
 conversationSchema.index({ isActive: 1, lastActivity: -1 });
 
-// Update lastActivity on message push
 conversationSchema.methods.addMessage = function (messageData) {
   this.messages.push(messageData);
   this.lastActivity = new Date();
@@ -71,3 +70,4 @@ conversationSchema.methods.addMessage = function (messageData) {
 const Conversation = mongoose.model("Conversation", conversationSchema);
 
 export default Conversation;
+```

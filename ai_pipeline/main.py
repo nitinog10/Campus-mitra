@@ -1,9 +1,11 @@
+```python
 # Entry point for FastAPI AI pipeline
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 import os
 from pathlib import Path
+from utilities import create_directories
 
 from services.document_processor import DocumentProcessor
 from services.chat_service import ChatService
@@ -32,8 +34,7 @@ document_processor = DocumentProcessor()
 chat_service = ChatService()
 
 # Create necessary directories
-os.makedirs("temp_uploads", exist_ok=True)
-os.makedirs("vector_stores", exist_ok=True)
+create_directories(["temp_uploads", "vector_stores"])
 
 @app.on_event("startup")
 async def startup_event():
@@ -126,7 +127,6 @@ async def list_documents():
             "message": f"Error retrieving documents: {str(e)}"
         }
 
-
 @app.get("/api/documents/status/{doc_id}")
 async def get_document_status(doc_id: str):
     """Get processing status of a document"""
@@ -149,3 +149,4 @@ async def delete_document(doc_id: str):
 
 if __name__ == "__main__":
     uvicorn.run(app, host="0.0.0.0", port=8001)
+```

@@ -1,11 +1,12 @@
-```
+```jsx
+// File: frontend/src/components/ui/badge.jsx
+
 import * as React from "react";
 import { cn } from "../../lib/utils";
 import { getVariantClasses } from "../../lib/variantUtils";
 
 function Badge({ className, variant = "default",...props }) {
-  const baseClasses =
-    "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
+  const baseClasses = "inline-flex items-center rounded-full border px-2.5 py-0.5 text-xs font-semibold transition-colors focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2";
 
   return (
     <div
@@ -18,7 +19,7 @@ function Badge({ className, variant = "default",...props }) {
 export { Badge };
 ```
 
-```
+```js
 // File: frontend/src/lib/variantUtils.js
 
 export function getVariantClasses(variant) {

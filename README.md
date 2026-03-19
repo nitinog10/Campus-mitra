@@ -4,13 +4,11 @@
 
 ## Overview
 
-```
-The `repo_a6308e84db08` repository is a comprehensive project for a RAG-powered AI chat platform. The project is divided into several key components: `ai_pipeline`, `backend`, `chatbot-rag-langchain-main`, and `frontend`. 
+The `repo_3a45ced7acda` repository is a comprehensive project that integrates an AI-driven document processing pipeline with a backend server and a frontend application. The project facilitates document management, chat interactions, and AI-powered question answering. The tech stack includes Python for the AI pipeline, Node.js for the backend, and React for the frontend.
 
-The `ai_pipeline` folder contains the core AI functionalities, leveraging technologies like FastAPI, LangChain, and OCR. It includes modules for handling requests and responses, caching, chat services, and document processing. The `backend` folder is built using Node.js and Express, featuring routes, controllers, middleware, and models for managing authentication, chats, and documents. 
+The `ai_pipeline` folder contains the core AI functionalities, including document processing (`document_processor.py`), chat services (`chat_service.py`), and utility functions for PDF handling (`pdf_utils.py`). The `backend` folder houses the Node.js server, with modules for authentication (`authController.js`), chat management (`chatController.js`), and document handling (`documentController.js`). Middleware components like `auth.js` and `rateLimiter.js` ensure secure and efficient API usage.
 
-The `chatbot-rag-langchain-main` folder houses the chatbot logic, utilizing LangChain for natural language processing. The `frontend` folder is a React application that provides the user interface for interacting with the chat platform. This project is intended for users who need an advanced, AI-driven chat solution with robust backend support and a modern frontend.
-```
+The `frontend` folder comprises the React application, featuring components for document management, chat interfaces, and UI elements. Key files include `App.jsx` for the main application structure, and various components under `components/` for reusable UI parts. The project is intended for users who need robust document processing capabilities coupled with interactive chat features, likely in an administrative or customer support context.
 
 ## Architecture
 
@@ -19,102 +17,110 @@ The `chatbot-rag-langchain-main` folder houses the chatbot logic, utilizing Lang
 
 ### Overview
 
-The Campusmitra project is structured into several key components, each serving a distinct purpose within the RAG-powered AI chat platform. Below is a breakdown of the architecture, focusing on the main components and how they interact.
+The codebase is structured into several key modules, each serving a distinct purpose and interacting with others to provide a cohesive system. The primary modules are:
 
-### Components
+- `ai_pipeline/`: Handles AI-related tasks such as document processing and chat interactions.
+- `backend/`: Contains the server-side logic, including authentication, routing, and database interactions.
+- `chatbot-rag-langchain-main/`: Implements a Streamlit-based chatbot.
+- `frontend/`: Houses the client-side application, including UI components and API interactions.
 
-1. **Root Level**
-   - `README.md`: Provides an overview of the entire project.
-   - `package.json`: Defines project-wide dependencies and scripts.
+### Module Breakdown
 
-2. **ai_pipeline/**
-   - **main.py**: The entry point for the AI pipeline, integrating FastAPI.
-   - **config/settings.py**: Configuration settings for the AI pipeline.
-   - **models/**:
-     - `request_models.py`: Defines models for request data.
-     - `response_models.py`: Defines models for response data.
-   - **services/**:
-     - `cache_service.py`: Handles caching mechanisms.
-     - `chat_service.py`: Manages chat-related functionalities.
-     - `document_processor.py`: Processes documents for ingestion and retrieval.
-   - **utils/pdf_utils.py**: Utility functions for PDF handling.
+#### AI Pipeline (`ai_pipeline/`)
 
-3. **backend/**
-   - **index.js**: The entry point for the backend server.
-   - **src/**:
-     - **config/database.js**: Establishes the database connection.
-     - **controllers/**:
-       - `authController.js`: Handles authentication-related endpoints.
-       - `chatController.js`: Manages chat-related API endpoints.
-       - `documentController.js`: Handles document-related operations.
-     - **middleware/**:
-       - `auth.js`: Middleware for request authentication.
-       - `rateLimiter.js`: Middleware for rate limiting.
-       - `upload.js`: Middleware for handling file uploads.
-     - **models/**:
-       - Core data models like `AdminUser.js`, `Conversation.js`, `Document.js`.
-     - **routes/**:
-       - `authRoutes.js`: Defines authentication routes.
-       - `chatRoutes.js`: Defines chat-related routes.
-       - `documentRoutes.js`: Defines document-related routes.
-       - `telegramRoutes.js`: Defines routes for Telegram bot interactions.
-     - **services/**:
-       - `aiProxyService.js`: Service for interacting with the AI pipeline.
-       - `authService.js`: Service for authentication-related operations.
-     - **utils/jwtUtils.js**: Utilities for handling JSON Web Tokens.
+- **Entry Point**: `main.py`
+- **Configuration**: `config/settings.py`
+- **Models**: 
+  - `models/request_models.py`: Defines models for incoming requests.
+  - `models/response_models.py`: Defines models for outgoing responses.
+- **Services**: 
+  - `services/cache_service.py`: Manages caching mechanisms.
+  - `services/chat_service.py`: Handles chat-related logic.
+  - `services/document_processor.py`: Processes documents.
+- **Utilities**: 
+  - `utils/pdf_utils.py`: Provides utility functions for PDF handling.
 
-4. **chatbot-rag-langchain-main/**
-   - **app.py**: The main application file for the chatbot.
-   - **brain.py**: Core logic for the chatbot's brain.
-   - **requirements.txt**: Lists dependencies for the chatbot project.
+#### Backend (`backend/`)
 
-5. **frontend/**
-   - **index.html**: The main HTML file for the frontend.
-   - **src/**:
-     - **components/**: React components organized into sub-folders like `chat/`, `document/`, `layout/`, and `ui/`.
-     - **constants/appConstants.js**: Application-wide constants.
-     - **hooks/useChat.js**: Custom React hook for chat-related functionality.
-     - **lib/utils.js**: General utility functions.
-     - **utils/toast.js**: Utility for displaying toast notifications.
-     - **views/AdminDashboard.js**: View component for the admin dashboard.
+- **Entry Point**: `index.js`
+- **Configuration**: 
+  - `src/config/database.js`: Establishes database connections.
+- **Controllers**: 
+  - `src/controllers/authController.js`: Manages authentication.
+  - `src/controllers/chatController.js`: Handles chat-related operations.
+  - `src/controllers/documentController.js`: Manages document-related operations.
+- **Middleware**: 
+  - `src/middleware/auth.js`: Authentication middleware.
+  - `src/middleware/rateLimiter.js`: Rate limiting middleware.
+  - `src/middleware/upload.js`: File upload middleware.
+- **Models**: 
+  - `src/models/AdminUser.js`: Defines the admin user model.
+  - `src/models/Conversation.js`: Defines the conversation model.
+  - `src/models/Document.js`: Defines the document model.
+- **Routes**: 
+  - `src/routes/authRoutes.js`: Defines authentication routes.
+  - `src/routes/chatRoutes.js`: Defines chat-related routes.
+  - `src/routes/documentRoutes.js`: Defines document-related routes.
+  - `src/routes/telegramRoutes.js`: Defines Telegram bot interactions.
+- **Services**: 
+  - `src/services/aiProxyService.js`: Interacts with the AI pipeline.
+  - `src/services/authService.js`: Handles authentication services.
+- **Utilities**: 
+  - `src/utils/jwtUtils.js`: Provides utilities for handling JWTs.
+
+#### Chatbot (`chatbot-rag-langchain-main/`)
+
+- **Entry Point**: `app.py`
+- **Core Logic**: `brain.py`
+- **Dependencies**: `requirements.txt`
+
+#### Frontend (`frontend/`)
+
+- **Entry Point**: `src/main.jsx`
+- **Components**: 
+  - `src/components/`: Contains reusable UI components.
+  - `src/components/chat/`: Chat-related components.
+  - `src/components/document/`: Document-related components.
+  - `src/components/layout/`: Layout components.
+  - `src/components/ui/`: UI elements.
+- **API**: 
+  - `src/api/`: Contains API client and related functions.
+- **Constants**: 
+  - `src/constants/appConstants.js`: Application-wide constants.
+- **Hooks**: 
+  - `src/hooks/useChat.js`: Custom React hooks for chat functionality.
+- **Utilities**: 
+  - `src/utils/toast.js`: Utility for displaying toast notifications.
+- **Views**: 
+  - `src/views/AdminDashboard.js`: Admin dashboard view.
 
 ### Data Flow
 
-1. **User Interaction**:
-   - Users interact with the frontend, triggering API requests.
-   
-2. **Frontend to Backend**:
-   - API requests are sent to the backend, handled by routes defined in `backend/src/routes/`.
-
-3. **Backend Processing**:
-   - Controllers (`authController.js`, `chatController.js`, `documentController.js`) process the requests.
-   - Middleware (`auth.js`, `rateLimiter.js`, `upload.js`) applies necessary checks and transformations.
-   - Services (`aiProxyService.js`, `authService.js`) interact with external systems or the AI pipeline.
-
-4. **AI Pipeline**:
-   - The AI pipeline (`ai_pipeline/`) processes requests, utilizing services like `chat_service.py` and `document_processor.py`.
-   - Cache service (`cache_service.py`) may be used to store and retrieve frequently accessed data.
-
-5. **Database Interaction**:
-   - Models (`AdminUser.js`, `Conversation.js`, `Document.js`) interact with the MongoDB database via Mongoose.
-
-6. **Response**:
-   - The backend sends responses back to the frontend, which updates the UI accordingly.
+1. **User Interaction**: Users interact with the frontend, triggering API requests.
+2. **API Requests**: The frontend sends requests to the backend via defined routes.
+3. **Backend Processing**: 
+   - Middleware processes the requests (e.g., authentication, rate limiting).
+   - Controllers handle the business logic and interact with services.
+   - Services may call the AI pipeline for additional processing.
+4. **AI Pipeline**: 
+   - Processes documents and handles chat interactions.
+   - Returns processed data to the backend.
+5. **Response**: The backend sends the processed data back to the frontend.
+6. **Frontend Update**: The frontend updates the UI based on the received data.
 
 ### Key Design Patterns
 
 - **MVC (Model-View-Controller)**: Used in the backend to separate concerns.
-- **Service Layer**: Encapsulates business logic in services like `aiProxyService.js` and `chat_service.py`.
-- **Middleware**: Applies cross-cutting concerns like authentication and rate limiting.
-- **Caching**: Utilized in `cache_service.py` to improve performance.
+- **Service Layer**: Encapsulates business logic in services.
+- **Middleware**: Used for cross-cutting concerns like authentication and rate limiting.
+- **Utility Functions**: Encapsulate common functionality (e.g., PDF handling, JWT utilities).
 
 ### Main Entry Points
 
-- **Frontend**: `index.html` and `src/main.jsx`.
-- **Backend**: `index.js`.
-- **AI Pipeline**: `main.py`.
-
-This architecture ensures a clear separation of concerns, making the codebase maintainable and scalable.
+- **AI Pipeline**: `main.py`
+- **Backend**: `index.js`
+- **Frontend**: `src/main.jsx`
+- **Chatbot**: `app.py`
 ```
 
 ## Folder Structure
@@ -256,81 +262,31 @@ This architecture ensures a clear separation of concerns, making the codebase ma
 
 ## Dependencies
 
-### Dependencies
+## Dependencies
 
-#### Production Dependencies
+### Major Libraries
 
-- **vite**: A build tool that aims to provide a faster and leaner development experience for modern web projects. 
-  - **Version Constraint**: `^7.1.4`
-
-#### Development Dependencies
-
-- **concurrently**: A Node.js tool to execute multiple commands concurrently.
+- **concurrently**
+  - **Purpose**: To run multiple commands concurrently.
   - **Version Constraint**: `^9.0.0`
+  - **Type**: Development Dependency
 
-The `package.json` file specifies dependencies for a monorepo setup, managing different workspaces for `frontend`, `backend`, `ai_pipeline`, and `telegram-bot`. The production dependency `vite` is used for efficient development, while `concurrently` is a development dependency to run multiple scripts simultaneously.
+- **vite**
+  - **Purpose**: A build tool that aims to provide a faster and leaner development experience for modern web projects.
+  - **Version Constraint**: `^7.1.4`
+  - **Type**: Production Dependency
+
+### Version Constraints
+
+- **Development Dependencies**:
+  - `concurrently`: `^9.0.0`
+
+- **Production Dependencies**:
+  - `vite`: `^7.1.4`
 
 ## File Documentation
 
 ### README.md
-
-#### Overview
-
-# Campusmitra - RAG-Powered AI Chat Platform
-
-#### Module Overview
-
-This `README.md` file provides an overview of the Campusmitra project, detailing its features, architecture, project structure, technology stack, and quick start guide. It serves as the primary documentation for new developers to understand the project setup and functionality.
-
-#### Dependencies
-
-- **React 18**: Frontend framework
-- **Vite**: Build tool and dev server
-- **Tailwind CSS**: CSS framework
-- **Axios**: HTTP client
-- **Node.js**: Backend runtime
-- **Express.js**: Web framework
-- **MongoDB**: Database
-- **Mongoose**: ODM for MongoDB
-- **Python 3.12**: Backend language for AI pipeline
-- **FastAPI**: Web framework for AI pipeline
-- **LangChain**: LLM application framework
-- **OpenAI GPT-4**: Language model
-- **FAISS**: Vector similarity search
-- **PyPDF**: PDF text extraction
-
-#### Classes
-
-None
-
-#### Functions
-
-None
-
-#### Configuration
-
-### Backend Configuration
-Located in `backend/src/config/database.js`:
-- MongoDB connection settings
-- JWT configuration
-- Rate limiting settings
-
-### AI Pipeline Configuration
-Located in `ai_pipeline/config/settings.py`:
-- OpenAI settings
-- Vector store configuration
-- Document processing parameters
-
-#### Constants
-
-None
-
-#### Notes
-
-- Ensure all environment variables are correctly set in the `.env` files for both backend and AI pipeline.
-- Verify that MongoDB and the AI pipeline services are running before starting the frontend.
-- Check the AI pipeline logs for any issues related to document processing or chat responses.
-- Use the browser developer console for frontend debugging and backend console logs for server-side issues.
 
 ### package.json
 
@@ -338,7 +294,7 @@ None
 
 # package.json Documentation
 
-This file defines the project's configuration, dependencies, and scripts. It's crucial for managing the project's setup and build processes.
+This file defines the project's configuration, dependencies, and scripts. It's the backbone of managing the project's environment and ensuring all components work seamlessly together.
 
 #### Dependencies
 
@@ -351,8 +307,8 @@ This file defines the project's configuration, dependencies, and scripts. It's c
 
 | Script | Parameters | Returns | Description |
 |--------|------------|---------|-------------|
-| dev    | None       | None    | Starts the development server using `scripts/start-dev.js`. |
-| dev:all | None       | None    | Runs development servers for all workspaces concurrently. |
+| dev    | None       | None    | Starts the development server using `node scripts/start-dev.js`. |
+| dev:all | None       | None    | Runs development servers for frontend, backend, AI pipeline, and Telegram bot concurrently. |
 | dev:legacy | None | None | Runs development servers for frontend, backend, and AI pipeline concurrently. |
 | telegram-bot | None | None | Starts the Telegram bot. |
 | telegram-bot:dev | None | None | Runs the Telegram bot in development mode. |
@@ -360,54 +316,62 @@ This file defines the project's configuration, dependencies, and scripts. It's c
 #### Configuration
 
 - `private`: Set to `true` to prevent accidental publication of the package.
-- `workspaces`: Lists the directories that are part of the monorepo, including `frontend`, `backend`, `ai_pipeline`, and `telegram-bot`.
+- `workspaces`: Lists the directories that are part of the workspace, enabling individual package management for each.
 
 #### Notes
 
-- Ensure that all workspaces are correctly set up and dependencies are installed before running any scripts.
+- Ensure `concurrently` is installed in the project root to avoid script errors.
+- The `dev` script in `scripts` is a custom script that should be reviewed in `scripts/start-dev.js`.
 - The `dev:all` script is useful for running all parts of the project in development mode simultaneously.
-- The `concurrently` package is essential for running multiple scripts at once, especially during development.
+- Always check the versions of dependencies to ensure compatibility with the rest of the project.
 
 ### ai_pipeline/README.md
 
 #### Overview
 
-# AI Pipeline
+# ai_pipeline/README.md
 
-This file provides an overview of the `ai_pipeline` module, which integrates FastAPI, LangChain, OCR, and vector database functionalities for the AI pipeline of Project campusmitra.
+#### Module Overview
+
+This file provides an overview of the AI pipeline for Project campusmitra, detailing the FastAPI, LangChain, OCR, and vector database components. It aims to help new developers understand the structure and functionality of the pipeline quickly.
 
 #### Dependencies
 
-| Import | Purpose |
-| --- | --- |
-| `fastapi` | Provides the web framework for the API endpoints. |
-| `langchain` | Facilitates the chaining of language models for natural language processing tasks. |
-| `pytesseract` | Utilizes OCR to extract text from images. |
-| `faiss` | Implements the vector database for efficient similarity search. |
+| Dependency | Purpose |
+|------------|---------|
+| FastAPI    | Asynchronous web framework for building APIs. |
+| LangChain  | Framework for building applications with large language models. |
+| OCR        | Optical Character Recognition for extracting text from images. |
+| Vector DB  | Database for storing and querying vector embeddings. |
 
 #### Classes
 
-| Class | Purpose | Key Methods |
-| --- | --- | --- |
-| `AIPipeline` | Manages the overall AI pipeline workflow. | `run()`, `process_image()`, `query_vector_db()` |
+| Class       | Purpose                                              | Key Methods |
+|-------------|------------------------------------------------------|-------------|
+| Pipeline    | Manages the sequence of processing steps in the pipeline | `run()`     |
+| Processor   | Handles specific data processing tasks               | `process()` |
 
 #### Functions
 
-| Function | Parameters | Returns | Description |
-| --- | --- | --- | --- |
-| `create_api_route` | `request` | `response` | Creates and handles API routes. |
-| `extract_text_from_image` | `image_path` | `str` | Extracts text from an image using OCR. |
-| `search_vector_db` | `query_vector` | `list` | Searches the vector database for similar vectors. |
+| Function    | Parameters                | Returns | Description                  |
+|-------------|---------------------------|---------|------------------------------|
+| load_data   | `file_path`               | `data`  | Loads data from a file       |
+| preprocess  | `data`                   | `data`  | Preprocesses input data      |
+| extract_text| `image`                   | `text`  | Extracts text from an image  |
 
 #### Configuration
 
-- Ensure environment variables are set for API keys and database connections.
+The pipeline configuration is managed through environment variables. Key variables include:
+
+- `API_PORT`: Port number for the FastAPI server.
+- `DB_CONNECTION_STRING`: Connection string for the vector database.
 
 #### Notes
 
-- Use Python virtual environments to manage dependencies.
-- Always validate inputs to avoid errors in the OCR and vector database operations.
-- The `AIPipeline` class should be instantiated and its `run()` method called to start the pipeline.
+- Ensure Python virtual environments are used to manage dependencies.
+- The `Pipeline` class orchestrates the entire workflow, calling relevant methods in the `Processor` class.
+- Always validate inputs before processing to avoid errors in the pipeline.
+- The `extract_text` function relies on an external OCR service; ensure it is configured correctly.
 
 ### ai_pipeline/main.py
 
@@ -417,7 +381,7 @@ This file provides an overview of the `ai_pipeline` module, which integrates Fas
 
 #### Module Overview
 
-This file serves as the entry point for the FastAPI-based AI pipeline, handling document processing and chat queries. It sets up the API, initializes services, and defines endpoints for document uploads, chat queries, and document management.
+This file serves as the entry point for the AI Pipeline API, providing endpoints for document processing and chat querying using a RAG-based system.
 
 #### Dependencies
 
@@ -425,14 +389,16 @@ This file serves as the entry point for the FastAPI-based AI pipeline, handling 
 | --- | --- |
 | `fastapi` | Framework for building the API |
 | `uvicorn` | ASGI server to run the FastAPI app |
-| `os`, `pathlib` | File and directory management |
-| `services.document_processor`, `services.chat_service` | Services for document processing and chat functionalities |
-| `models.request_models`, `models.response_models` | Models for request and response handling |
-| `config.settings` | Configuration settings for the application |
+| `os`, `pathlib` | Utilities for file and directory operations |
+| `utilities.create_directories` | Helper function to create necessary directories |
+| `services.document_processor` | Service for processing documents |
+| `services.chat_service` | Service for handling chat queries |
+| `models.request_models`, `models.response_models` | Models for request and response data |
+| `config.settings` | Configuration settings for the API |
 
 #### Classes
 
-No classes are defined in this file.
+(No classes defined in this file)
 
 #### Functions
 
@@ -442,35 +408,35 @@ No classes are defined in this file.
 | `health_check` | None | JSON | Returns the health status of the service |
 | `process_document` | `file: UploadFile` | JSON | Processes an uploaded PDF document |
 | `chat_query` | `request: ChatRequest` | JSON | Processes a chat query |
-| `search_multiple_documents` | `request: MultiDocumentChatRequest` | JSON | Searches across multiple documents for a query |
+| `search_multiple_documents` | `request: MultiDocumentChatRequest` | JSON | Searches across multiple documents |
 | `list_documents` | None | JSON | Lists all available documents |
-| `get_document_status` | `doc_id: str` | JSON | Returns the status of a document |
+| `get_document_status` | `doc_id: str` | JSON | Gets the processing status of a document |
 | `delete_document` | `doc_id: str` | JSON | Deletes a document from the vector store |
 
 #### Configuration
 
-The API server is configured to run on `host="0.0.0.0"` and `port=8001`. CORS is enabled for specific origins.
+The API uses settings from `config.settings` for configuration.
 
 #### Notes
 
-- The API supports only PDF files for document uploads, with a maximum file size of 20MB.
-- The `cache_service` is initialized during the startup event, and any failure in cache initialization is logged as a warning.
+- The API supports only PDF files for document uploads.
+- The maximum file size for uploads is 20MB.
+- The API initializes a cache on startup, which can be found in `services.cache_service`.
 - Error handling is implemented for all endpoints to return appropriate HTTP status codes and messages.
 
 ### ai_pipeline/package.json
 
 #### Overview
 
-# ai_pipeline/package.json
+# `ai_pipeline/package.json`
 
 #### Module Overview
 
-This file defines the configuration for the `ai_pipeline` project. It specifies the project's name, version, entry point, and the scripts used to run the application in development and production environments.
+This file defines the configuration for the `ai_pipeline` project, specifying its dependencies, entry point, and scripts for development and production. It ensures that the project can be correctly set up and run using Node.js tools.
 
 #### Dependencies
 
-This file does not directly import any dependencies but relies on the following tools:
-- `uvicorn`: An ASGI server used to run the FastAPI application.
+This file does not list direct dependencies but relies on Python packages defined in `requirements.txt` for the `ai_pipeline` project.
 
 #### Functions
 
@@ -481,9 +447,9 @@ This file does not directly import any dependencies but relies on the following 
 
 #### Notes
 
-- The `dev` script is useful for local development as it provides live reloading.
-- The `start` script is intended for deployment in a production environment.
-- Ensure that the `main.py` file is correctly set up to run the FastAPI application.
+- The `main` field specifies `main.py` as the entry point for the Python application.
+- The `scripts` section defines commands to run the application using Uvicorn, a Python ASGI server.
+- This file is a placeholder for Node.js projects; for this Python-based pipeline, it's more of a reference for setup scripts.
 
 ### ai_pipeline/requirements.txt
 
@@ -491,31 +457,31 @@ This file does not directly import any dependencies but relies on the following 
 
 # Module Overview
 
-The `ai_pipeline/requirements.txt` file lists the Python dependencies required to run the AI pipeline. It ensures that all necessary libraries are installed and up-to-date, facilitating smooth development and deployment of the AI pipeline.
+The `ai_pipeline/requirements.txt` file lists the dependencies required for the AI pipeline project. It ensures that all necessary libraries are installed and available for development and production environments.
 
 # Dependencies
 
 | Dependency | Purpose |
 |------------|---------|
-| fastapi | A modern, fast (high-performance) web framework for building APIs with Python 3.7+ based on standard Python type hints. |
+| fastapi | A modern, fast (high-performance), web framework for building APIs with Python 3.7+ based on standard Python type hints. |
 | uvicorn | An ASGI (Asynchronous Server Gateway Interface) server implementation for Python. |
-| python-multipart | A library to handle multipart form data. |
-| pydantic | A data validation and settings management library using Python type annotations. |
-| python-dotenv | Loads environment variables from a `.env` file. |
-| openai | Official Python SDK for the OpenAPI (formerly known as the Open Assistant) API. |
+| python-multipart | A library to handle multipart/form-data encoding. |
+| pydantic | A data validation library that uses Python type annotations. |
+| python-dotenv | A library to load environment variables from a `.env` file. |
+| openai | Official Python SDK for the OpenAPI (formerly known as the API) platform. |
 | langchain | A framework for building applications powered by language models. |
 | langchain-core | Core components of the LangChain framework. |
 | langchain-community | Community-contributed extensions for LangChain. |
 | langchain-openai | Integration with the OpenAPI for LangChain. |
 | faiss-cpu | A library for efficient similarity search and clustering of dense vectors. |
-| pypdf | A library to extract text and metadata from PDF files. |
-| cachetools | A set of production-ready, high-performance, low-overhead caching classes. |
+| pypdf | A library to extract and manipulate PDF files. |
+| cachetools | A set of efficient caching algorithms and data structures. |
 
 # Notes
 
-- Ensure all dependencies are compatible with the current Python version used in the project.
-- Regularly update dependencies to benefit from the latest features and security patches.
-- Be mindful of potential version conflicts between different libraries, especially when using community-contributed extensions.
+- Ensure all dependencies are up-to-date to avoid compatibility issues.
+- Use `pip install -r ai_pipeline/requirements.txt` to install all dependencies.
+- Environment-specific dependencies should be managed carefully to avoid conflicts in production and development environments.
 
 ### ai_pipeline/config/settings.py
 
@@ -525,13 +491,13 @@ The `ai_pipeline/requirements.txt` file lists the Python dependencies required t
 
 #### Module Overview
 
-This file defines the `Settings` class, which holds configuration values for the AI pipeline. It retrieves environment variables and sets default values for various parameters used throughout the pipeline.
+This file defines the `Settings` class, which encapsulates configuration parameters for the AI pipeline. It loads environment variables and sets default values for various parameters used throughout the pipeline.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `os` | Provides access to the underlying operating system’s environment variables. |
+| `os` | Provides access to the underlying operating system's environment variables. |
 | `dotenv` | Loads environment variables from a `.env` file. |
 
 #### Classes
@@ -544,26 +510,26 @@ This file defines the `Settings` class, which holds configuration values for the
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `__init__` | None | None | Initializes the settings with environment variables and default values. |
+| `load_dotenv` | None | None | Loads environment variables from a `.env` file. |
 
 #### Configuration
 
-| Variable | Type | Default Value | Description |
+| Variable | Type | Default | Description |
 | --- | --- | --- | --- |
 | `openai_api_key` | str | Environment variable `OPENAI_API_KEY` | API key for accessing the OpenAPI service. |
-| `vector_store_path` | str | `"vector_stores"` | Directory path for vector store. |
-| `temp_uploads_path` | str | `"temp_uploads"` | Directory path for temporary uploads. |
-| `max_file_size` | int | `20 * 1024 * 1024` | Maximum allowed file size in bytes (20MB). |
-| `chunk_size` | int | `4000` | Size of chunks for processing. |
+| `vector_store_path` | str | `"vector_stores"` | Path to the directory storing vector data. |
+| `temp_uploads_path` | str | `"temp_uploads"` | Path to the directory for temporary uploads. |
+| `max_file_size` | int | `20 * 1024 * 1024` | Maximum file size allowed (20MB). |
+| `chunk_size` | int | `4000` | Size of chunks for text processing. |
 | `chunk_overlap` | int | `100` | Overlap between chunks for faster processing. |
-| `similarity_search_k` | int | `2` | Number of top results to return for similarity search. |
-| `enable_response_cache` | bool | `True` | Flag to enable response caching. |
+| `similarity_search_k` | int | `2` | Number of nearest neighbors to search for similarity. |
+| `enable_response_cache` | bool | `True` | Flag to enable caching of responses. |
 
 #### Notes
 
-- Ensure that the `.env` file is correctly set up with the `OPENAI_API_KEY` variable.
-- The `chunk_overlap` and `similarity_search_k` values are tuned for faster processing but may be adjusted based on performance needs.
-- The `max_file_size` is set to 20MB to balance between performance and resource usage.
+- The `Settings` class initializes with environment variables and default values.
+- The `chunk_overlap` and `similarity_search_k` values are reduced for faster processing, but can be adjusted based on performance needs.
+- Ensure the `.env` file is correctly set up with the necessary environment variables.
 
 ### ai_pipeline/models/request_models.py
 
@@ -573,32 +539,32 @@ This file defines the `Settings` class, which holds configuration values for the
 
 #### Module Overview
 
-This file defines data models for requests that are part of our AI pipeline. These models are used to structure incoming requests, ensuring they contain the necessary information in the correct format. They leverage Pydantic for validation and schema definition.
+This file defines data models for various request types used in our AI pipeline. These models ensure that incoming requests are validated and structured correctly before they are processed by the pipeline.
 
 #### Dependencies
 
-- `BaseModel` and `ConfigDict` from `pydantic`: Used for defining data models with validation and schema generation.
-- `Optional` and `List` from `typing`: Provide type hints for optional fields and lists.
+- `pydantic`: Provides the `BaseModel` and `ConfigDict` classes used for data validation and configuration.
+- `typing`: Offers type hints for function parameters and return types.
 
 #### Classes
 
-| Class               | Purpose                  | Key Methods |
-|---------------------|--------------------------|-------------|
-| `ChatRequest`       | Represents a single chat request with a query and an optional document ID. | N/A         |
-| `MultiDocumentChatRequest` | Represents a chat request involving multiple documents with a query and a list of document IDs. | N/A         |
+| Class              | Purpose                  | Key Methods |
+|--------------------|--------------------------|-------------|
+| `ChatRequest`      | Represents a chat request with a query and an optional document ID. | N/A         |
+| `MultiDocumentChatRequest` | Represents a chat request with a query and a list of document IDs. | N/A         |
 | `DocumentUploadRequest` | Represents a request to upload a document with a filename and content. | N/A         |
 
 #### Functions
 
-| Function            | Parameters                 | Returns | Description                  |
-|---------------------|-----------------------------|---------|------------------------------|
-| N/A                 | N/A                        | N/A     | No functions defined in this file. |
+| Function           | Parameters                | Returns | Description |
+|--------------------|----------------------------|---------|-------------|
+| N/A                | N/A                        | N/A     | No functions are defined in this file. |
 
 #### Notes
 
-- All fields in the models are validated to ensure they conform to the specified types and constraints.
-- The `ChatRequest` and `MultiDocumentChatRequest` classes include examples in their model configurations to illustrate expected request formats.
-- The `DocumentUploadRequest` expects raw byte content for document uploads, suitable for binary data like PDFs or images.
+- All classes extend `BaseModel` from `pydantic`, which automatically generates validation and serialization code.
+- The `model_config` attribute in each class provides an example JSON schema for better understanding of the expected request structure.
+- The `ChatRequest` and `MultiDocumentChatRequest` classes are used for handling chat-based interactions with the AI pipeline, while `DocumentUploadRequest` is used for uploading new documents.
 
 ### ai_pipeline/models/response_models.py
 
@@ -608,36 +574,33 @@ This file defines data models for requests that are part of our AI pipeline. The
 
 #### Module Overview
 
-This file defines data models for responses in the AI pipeline. These models are used to structure and validate the output from various components, ensuring consistency and ease of handling across the application.
+This file defines data models for responses in the AI pipeline. It uses Pydantic for validation and serialization, ensuring that our responses are consistent and easy to handle.
 
 #### Dependencies
 
-- `pydantic`: Provides the `BaseModel` and `ConfigDict` for creating and configuring data models.
-- `typing`: Offers type hints for better code readability and static type checking.
+- `pydantic`: Provides `BaseModel` and `ConfigDict` for creating validated data models.
+- `typing`: Offers type hints for better code readability and static analysis.
 
 #### Classes
 
-| Class         | Purpose                  | Key Methods |
-|---------------|--------------------------|-------------|
+| Class        | Purpose                  | Key Methods |
+|--------------|--------------------------|-------------|
 | `DocumentResponse` | Represents a response from document processing operations. | N/A |
-| `ChatResponse` | Represents a response from chat-based interactions, including document content and sources. | N/A |
-| `StatusResponse` | Represents a simple status response indicating success or failure. | N/A |
+| `ChatResponse` | Represents a response from chat-based interactions. | N/A |
+| `StatusResponse` | Represents a simple status response. | N/A |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 |----------|------------|---------|-------------|
-| None     | None       | None    | No functions are defined in this file. |
-
-#### Configuration
-
-- The `model_config` attribute in each class uses `ConfigDict` to provide extra JSON schema information, including example payloads for better understanding and validation.
+| N/A      | N/A        | N/A     | No functions are defined in this file. |
 
 #### Notes
 
-- Each class is a Pydantic model, which means they automatically validate incoming data and provide easy serialization to JSON.
-- The `DocumentResponse` and `ChatResponse` classes include example payloads in their `model_config` to illustrate expected structure and data types.
-- The `StatusResponse` class is simple and straightforward, used for conveying basic success or failure messages.
+- All models are using Pydantic's `BaseModel` for validation and serialization.
+- `DocumentResponse` includes fields for success status, document ID, and a message.
+- `ChatResponse` includes fields for success status, the response text, content type (defaults to markdown), and optional sources.
+- `StatusResponse` is a simple model for status updates with success status and a message.
 
 ### ai_pipeline/services/cache_service.py
 
@@ -647,17 +610,17 @@ This file defines data models for responses in the AI pipeline. These models are
 
 #### Module Overview
 
-This file defines the `CacheService` class, which manages an in-memory cache with persistent storage. It uses a time-to-live (TTL) cache to store document information and ensures that the cache is periodically updated from the disk.
+This file defines the `CacheService` class, which manages an in-memory cache with persistent storage. It uses a time-to-live (TTL) cache to store metadata about documents processed by the AI pipeline, ensuring that frequently accessed data remains readily available while also persisting this data to disk for durability.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
 | `TTLCache` from `cachetools` | Provides an in-memory cache with TTL functionality |
-| `time` | Provides time-related functions |
-| `json` | Handles JSON serialization and deserialization |
+| `time` | Used for time-related operations |
+| `json` | For serializing and deserializing data to and from JSON |
 | `os` | Provides a way of using operating system dependent functionality |
-| `Path` from `pathlib` | Offers a way to handle filesystem paths |
+| `Path` from `pathlib` | For handling file paths in a more readable and object-oriented way |
 
 #### Classes
 
@@ -671,16 +634,16 @@ No standalone functions in this file.
 
 #### Configuration
 
-No specific configuration is required for this module.
+No specific configuration settings in this file.
 
 #### Notes
 
-- The cache file `cache_data.json` is used for persistent storage of document information.
+- The cache uses a JSON file for persistent storage, located at `cache_data.json`.
 - The cache is initialized with a maximum size of 100 items and a TTL of 3600 seconds (1 hour).
-- The `load_persistent_cache` method loads cache data from disk on startup.
-- The `rebuild_cache_from_disk` method ensures the cache is up-to-date by scanning the `vector_stores` directory.
-- The `save_persistent_cache` method saves the cache data to disk.
-- The cache service instance `cache_service` is created globally and can be used throughout the application.
+- The cache is automatically loaded from disk on startup and saved to disk whenever document information is added or removed.
+- The `rebuild_cache_from_disk` method ensures the cache is up-to-date by scanning the `vector_stores` directory for valid document directories.
+- The `save_persistent_cache` method only saves document metadata, not temporary data.
+- The `clear` method removes all items from the cache and deletes the persistent cache file.
 
 ### ai_pipeline/services/chat_service.py
 
@@ -688,69 +651,66 @@ No specific configuration is required for this module.
 
 # `ai_pipeline/services/chat_service.py`
 
-This file defines the `ChatService` class, which handles generating responses to user queries using the RAG (Retrieval-Augmented Generation) approach with conversation context.
+#### Module Overview
+
+This file defines the `ChatService` class, which handles generating responses to user queries using the Retrieval-Augmented Generation (RAG) approach. It integrates with the `OpenAI` API for text generation and uses a local cache and conversation memory to improve performance and context.
 
 #### Dependencies
 
-- `OpenAI`: Client for interacting with the OpenAI API.
-- `DocumentProcessor`: Service for loading and processing documents.
-- `cache_service`: Service for caching responses to prevent repeated API calls.
-- `settings`: Configuration settings, including the OpenAI API key and other parameters.
+- `OpenAI`: For interacting with the `OpenAI` API.
+- `DocumentProcessor`: For processing and retrieving document content.
+- `cache_service`: For caching responses to prevent repeated API calls.
+- `settings`: For configuration, including the `OpenAI` API key.
 
 #### Classes
 
-| Class       | Purpose                                                                                           | Key Methods                                                                                     |
-|-------------|---------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|
-| `ChatService` | Manages conversation context, caches responses, and generates RAG-based responses using OpenAI. | `__init__`, `_cleanup_cache`, `_get_conversation_history`, `_update_conversation_memory`, `get_response` |
+| Class | Purpose | Key Methods |
+| --- | --- | --- |
+| `ChatService` | Manages the RAG-based response generation for user queries. | `_cleanup_cache`, `_get_conversation_history`, `_update_conversation_memory`, `get_response` |
 
 #### Functions
 
-| Function                   | Parameters                                                                                       | Returns                                                                                         | Description                                                                                       |
-|----------------------------|--------------------------------------------------------------------------------------------------|-------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| `_cleanup_cache`          | None                                                                                             | None                                                                                            | Cleans up old cache entries to prevent memory bloat.                                              |
-| `_get_conversation_history` | `session_id: str`, `max_turns: int = 3`                                                          | `str`                                                                                           | Retrieves recent conversation history for a given session ID.                                     |
-| `_update_conversation_memory` | `session_id: str`, `question: str`, `response: str`                                             | None                                                                                            | Updates conversation memory with the latest question and response.                               |
-| `get_response`             | `query: str`, `document_id: Optional[str] = None`, `session_id: Optional[str] = None`            | `Dict[str, Any]`                                                                                | Generates a RAG-based response for the user query, optionally using conversation context and document content. |
+| Function | Parameters | Returns | Description |
+| --- | --- | --- | --- |
+| `_cleanup_cache` | None | None | Cleans up old cache entries to prevent memory bloat. |
+| `_get_conversation_history` | `session_id: str`, `max_turns: int` | `str` | Retrieves recent conversation history for context. |
+| `_update_conversation_memory` | `session_id: str`, `question: str`, `response: str` | None | Updates conversation memory with the latest Q&A. |
+| `get_response` | `query: str`, `document_id: Optional[str]`, `session_id: Optional[str]` | `Dict[str, Any]` | Generates a RAG-based response for the user query with conversation context. |
 
 #### Configuration
 
 - `settings.openai_api_key`: Required for initializing the `OpenAI` client.
-- `settings.similarity_search_k`: Number of similar documents to retrieve for RAG.
-
-#### Constants
-
-- `self.prompt_template`: Template for the RAG prompt, including instructions, conversation context, and PDF content.
+- `settings.similarity_search_k`: Number of similar documents to retrieve for context.
 
 #### Notes
 
-- The `ChatService` class assumes the presence of an `OpenAI` API key. If the key is missing or invalid, the service will not function correctly.
-- Conversation memory is stored in a simple dictionary for demonstration purposes. In a production environment, consider using a more robust storage solution like Redis or a database.
-- The response cache is a simple in-memory dictionary. Implement a more sophisticated caching mechanism for production use.
-- The `get_response` method uses different OpenAI models (`gpt-3.5-turbo` for simple queries and `gpt-4o-mini` for document-based queries) to balance cost and performance.
-- The RAG prompt template includes specific instructions for the AI assistant, ensuring consistent and formatted responses.
-- The `_cleanup_cache` method currently resets the entire cache when it exceeds 100 entries. Consider a more granular cleanup strategy for production.
+- The `api_key_available` flag determines if the `OpenAI` client is initialized.
+- The response cache is a simple in-memory dictionary, suitable for development but should be replaced with a more robust solution (e.g., Redis) in production.
+- Conversation memory is stored in a dictionary for simplicity but should be moved to a persistent store (e.g., database) in production.
+- The `prompt_template` defines the structure and instructions for generating responses.
+- Cache cleanup is performed periodically to prevent memory bloat, but a more sophisticated strategy may be needed in production.
 
 ### ai_pipeline/services/document_processor.py
 
 #### Overview
 
 # Module Overview
-This file contains the `DocumentProcessor` class, which handles the ingestion, processing, and storage of documents in a vector database. It's responsible for parsing PDFs, chunking text, creating embeddings, and storing the resulting vector store.
+This file contains the `DocumentProcessor` class, which handles the ingestion, processing, and storage of documents in a vector database. It extracts text from PDFs, chunks the text into manageable pieces, and stores the resulting document chunks in a FAISS vector store.
 
 #### Dependencies
 
 - `re`: Regular expressions for text processing.
 - `os`: File and directory operations.
-- `pickle`: Serialization for caching.
-- `hashlib`: Hashing for unique identifiers.
+- `pickle`: Serialization (used internally by FAISS).
+- `hashlib`: Hashing (not explicitly used in this file, but imported).
 - `shutil`: High-level file operations.
 - `io.BytesIO`: In-memory bytes stream for PDF parsing.
-- `typing.List, Tuple`: Type hints for function parameters and return types.
-- `uuid`: Unique identifier generation.
-- `langchain_core.documents.Document`: Document model for chunking.
-- `langchain_openai.OpenAIEmbeddings`: Embeddings generation using OpenAI.
+- `typing.List`, `typing.Tuple`: Type hints.
+- `uuid`: Universally unique identifiers for document IDs.
+- `langchain_core.documents.Document`: Document model.
+- `langchain_openai.OpenAIEmbeddings`: Embeddings from OpenAI.
 - `langchain_text_splitters.RecursiveCharacterTextSplitter`: Text chunking.
-- `langchain_community.vectorstores.FAISS`: Vector store for document embeddings.
+- `langchain_community.vectorstores.FAISS`: FAISS vector store.
 - `pypdf.PdfReader`: PDF parsing.
 - `config.settings.settings`: Configuration settings.
 - `services.cache_service.cache_service`: Caching service.
@@ -759,7 +719,7 @@ This file contains the `DocumentProcessor` class, which handles the ingestion, p
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `DocumentProcessor` | Handles document ingestion, processing, and storage | `process_document`, `get_vector_store`, `get_document_status`, `list_documents`, `delete_document` |
+| `DocumentProcessor` | Processes documents, extracts text, chunks text, and stores in vector database. | `_parse_pdf`, `_text_to_docs`, `_create_vector_store`, `process_document`, `get_vector_store`, `get_document_status`, `list_documents`, `delete_document` |
 
 #### Functions
 
@@ -768,22 +728,26 @@ This file contains the `DocumentProcessor` class, which handles the ingestion, p
 | `_parse_pdf` | `file_content: bytes`, `filename: str` | `Tuple[List[str], str]` | Parses PDF content and extracts text. |
 | `_text_to_docs` | `text: List[str]`, `filename: str` | `List[Document]` | Converts text to document chunks. |
 | `_create_vector_store` | `documents: List[Document]` | `FAISS` | Creates FAISS vector store from documents. |
+| `process_document` | `file_content: bytes`, `filename: str` | `str` | Processes document and stores in vector database. |
+| `get_vector_store` | `doc_id: str` | `FAISS` | Loads vector store for a document. |
+| `get_document_status` | `doc_id: str` | `str` | Gets processing status of a document. |
+| `list_documents` |   | `List[Dict]` | Lists all available documents. |
+| `delete_document` | `doc_id: str` |   | Deletes document and its vector store. |
 
 #### Configuration
 
 - `settings.openai_api_key`: Required for embeddings and vector store creation.
-- `settings.chunk_size`: Size of text chunks for document processing.
+- `settings.chunk_size`: Size of text chunks.
 - `settings.chunk_overlap`: Overlap between text chunks.
 - `settings.vector_store_path`: Directory for storing vector stores.
 
 #### Notes
 
 - The `process_document` method requires an OpenAI API key to function.
-- Text chunking uses a recursive character text splitter with configurable chunk size and overlap.
-- Vector stores are saved to disk using FAISS native methods.
-- Document metadata is persisted to disk for retrieval.
-- Document info is cached for quick access.
-- Deleting a document removes both its vector store and cache entry.
+- Text extraction from PDFs may fail for various reasons; error handling is in place.
+- Document chunks are stored in a FAISS vector store for efficient retrieval.
+- Document metadata is cached and stored on disk for persistence.
+- The `delete_document` method removes both the vector store and cache entry.
 
 ### ai_pipeline/utils/pdf_utils.py
 
@@ -793,26 +757,32 @@ This file contains the `DocumentProcessor` class, which handles the ingestion, p
 
 #### Module Overview
 
-This file provides utility functions for handling PDF files, including calculating file hashes, validating PDF files by extension, and formatting file sizes into human-readable strings.
+This file provides utility functions to handle PDF files within the AI pipeline. It includes methods for calculating file hashes, validating PDF files, and formatting file sizes.
 
 #### Dependencies
 
-- `hashlib`: Used for calculating SHA256 hashes of file content.
-- `typing`: Provides type hints for function parameters and return types.
+- `hashlib`: Provides a common interface to secure hash and message digest algorithms.
+- `typing`: Offers type hints to improve code readability and assist with static type checking.
+
+#### Classes
+
+| Class | Purpose | Key Methods |
+|-------|---------|-------------|
+| None  | N/A     | N/A         |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
-|----------|------------|---------|-------------|
+|----------|------------|----------|-------------|
 | `calculate_file_hash` | `file_content: bytes` | `str` | Calculates the SHA256 hash of the provided file content. |
-| `validate_pdf_file` | `filename: str` | `bool` | Validates if the provided filename ends with `.pdf`. |
-| `format_file_size` | `size_bytes: int` | `str` | Formats the file size in a human-readable format (e.g., KB, MB). |
+| `validate_pdf_file` | `filename: str` | `bool` | Validates if the file is a PDF based on its extension. |
+| `format_file_size` | `size_bytes: int` | `str` | Formats the file size into a human-readable string. |
 
 #### Notes
 
-- `calculate_file_hash` expects the file content as a byte string. Ensure the file is read into memory before passing it to this function.
-- `validate_pdf_file` relies solely on the file extension for validation. It does not check if the file is actually a valid PDF.
-- `format_file_size` converts bytes into a readable format, handling sizes from bytes to gigabytes.
+- `calculate_file_hash` uses the SHA256 algorithm for hashing, which is a widely accepted standard for file integrity checks.
+- `validate_pdf_file` relies solely on the file extension to determine if it's a PDF. This is a simple check and does not verify the file's actual content.
+- `format_file_size` handles sizes from bytes to gigabytes, providing a readable format for various file sizes.
 
 ### backend/index.js
 
@@ -820,27 +790,25 @@ This file provides utility functions for handling PDF files, including calculati
 
 # backend/index.js
 
-#### Module Overview
-
-This file initializes and configures the Express application for the CampusMitra backend, setting up middleware, routes, and error handling.
+This file initializes and configures the Express server for the CampusMitra backend. It sets up middleware, routes, and error handling to ensure the server runs smoothly.
 
 #### Dependencies
 
-| Import | Purpose |
-|--------|---------|
-| `express` | Web framework for Node.js |
-| `cors` | Middleware to enable Cross-Origin Resource Sharing |
-| `helmet` | Middleware to secure Express apps by setting various HTTP headers |
-| `dotenv` | Module to load environment variables from a `.env` file |
-| `connectDB` | Function to initialize the database connection |
-| `apiRoutes` | API routes for the application |
-| `apiLimiter` | Middleware to limit repeated requests to public APIs |
+| Module | Purpose |
+| ------ | ------- |
+| `express` | Web framework for Node.js to handle HTTP requests. |
+| `cors` | Middleware to enable Cross-Origin Resource Sharing. |
+| `helmet` | Middleware to secure Express apps by setting various HTTP headers. |
+| `dotenv` | Module to load environment variables from a `.env` file. |
+| `./src/config/database.js` | Database connection setup. |
+| `./src/routes/index.js` | API routes configuration. |
+| `./src/middleware/rateLimiter.js` | Middleware to limit repeated requests to public APIs. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
-|---------|------------|---------|-------------|
-| `app.listen` | `PORT` | `undefined` | Starts the server and logs a message when ready |
+| -------- | ---------- | ------- | ----------- |
+| `app.listen(PORT, callback)` | `PORT`: Port number, `callback`: Function to execute on server start | `undefined` | Starts the server and listens on the specified port. |
 
 #### Configuration
 
@@ -849,13 +817,13 @@ This file initializes and configures the Express application for the CampusMitra
 
 #### Notes
 
-- Ensure the `.env` file is properly configured with the necessary environment variables.
-- The `helmet` middleware is used to enhance security by setting various HTTP headers.
-- The `cors` middleware is configured to only allow requests from the specified `FRONTEND_URL`.
-- The `apiLimiter` middleware is applied to all routes under `/api` to prevent abuse.
-- The root endpoint (`/`) provides a JSON response with information about the server and available endpoints.
+- Ensure the `.env` file is properly configured with necessary environment variables.
+- The `helmet` middleware is crucial for securing the server by setting various HTTP headers.
+- The CORS configuration allows only requests from the specified `FRONTEND_URL`.
+- The rate limiter is applied to all routes under `/api` to prevent abuse.
+- The root endpoint `/` provides a JSON response with server information and available endpoints.
 - The 404 handler responds with a JSON message for undefined routes.
-- The global error handler logs unhandled errors and responds with a 500 status code.
+- The global error handler logs errors and responds with a generic internal server error message.
 
 ### backend/package.json
 
@@ -863,7 +831,7 @@ This file initializes and configures the Express application for the CampusMitra
 
 # Backend `package.json`
 
-This file defines the dependencies and scripts for our backend module. It ensures that all necessary packages are installed and provides commands to run the application in development and production environments.
+This file defines the dependencies and scripts for the backend module of our project. It ensures that all necessary packages are installed and specifies how to run the application.
 
 #### Dependencies
 
@@ -873,25 +841,26 @@ This file defines the dependencies and scripts for our backend module. It ensure
 | `cors` | Enables Cross-Origin Resource Sharing. |
 | `dotenv` | Loads environment variables from a `.env` file. |
 | `express` | A web framework for Node.js. |
-| `express-rate-limit` | Adds rate limiting middleware to express. |
+| `express-rate-limit` | Adds rate limiting to Express routes. |
 | `express-validator` | Provides middleware for input validation. |
 | `helmet` | Helps secure Express apps by setting various HTTP headers. |
 | `jsonwebtoken` | Used for creating, verifying, and decoding JSON Web Tokens. |
-| `mongoose` | An ODM (Object Data Modeling) library for MongoDB and Node.js. |
+| `mongoose` | Object Data Modeling (ODM) library for MongoDB and Node.js. |
 | `multer` | Middleware for handling `multipart/form-data`, used for uploading files. |
 
 #### Scripts
 
 | Script | Purpose |
 |--------|---------|
-| `dev` | Runs the application using `src/index.js` in development mode. |
-| `start` | Runs the application using `src/index.js` in production mode. |
+| `dev` | Runs the application in development mode. |
+| `start` | Starts the application in production mode. |
 
 #### Notes
 
-- The `private` field is set to `true` to ensure that this package is not published to the npm registry.
-- The `main` field points to the entry point of the application, `src/index.js`.
-- The `type` field is set to `module` to enable ES modules in the project.
+- Ensure that the `.env` file is correctly configured with necessary environment variables.
+- The `bcrypt` package is crucial for secure password management.
+- The `helmet` package is essential for securing the Express app by setting various HTTP headers.
+- The `jsonwebtoken` package is used for authentication and should be handled carefully to avoid security vulnerabilities.
 
 ### backend/src/config/database.js
 
@@ -899,7 +868,7 @@ This file defines the dependencies and scripts for our backend module. It ensure
 
 # Backend Module Overview
 
-This file establishes a connection to the MongoDB database using Mongoose. It handles connection events and ensures graceful shutdown when the application is terminated.
+This file, `backend/src/config/database.js`, establishes a connection to the MongoDB database using Mongoose. It handles connection events and ensures graceful shutdown during application termination.
 
 #### Dependencies
 
@@ -911,74 +880,77 @@ This file establishes a connection to the MongoDB database using Mongoose. It ha
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `connectDB` | None | None | Connects to the MongoDB database and handles connection events. |
+| `connectDB` | None | None | Connects to the MongoDB database and handles connection events and graceful shutdown |
 
 #### Notes
 
-- The `DB_URL` environment variable must be set for the connection URL.
+- The `connectDB` function attempts to connect to the database using the URL from `process.env.DB_URL`.
 - Connection errors are logged to the console.
-- The application handles disconnections silently.
-- Graceful shutdown is implemented to close the database connection when the application is terminated.
+- The application listens for `SIGINT` to close the database connection gracefully.
+- If a connection error occurs, the process exits with a status code of `1`.
 
 ### backend/src/controllers/authController.js
 
 #### Overview
 
-# File: `backend/src/controllers/authController.js`
+# authController.js
 
-#### Module Overview
-
-This file contains the `login` controller function, which handles user login requests. It validates the input, authenticates the user, and returns the appropriate response.
+This file handles user authentication, specifically the login process for admin users. It validates incoming login requests and delegates the actual authentication to the `authService`.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `authenticateAdmin` | Service function to authenticate an admin user. |
-| `body`, `validationResult` | Middleware from `express-validator` to validate request bodies and check validation results. |
+| `authenticateAdmin` | Function from `authService` to authenticate admin users. |
+| `body`, `validationResult` | Middleware from `express-validator` to validate request bodies and handle validation results. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `validateLogin` | N/A | Array of validation middleware | Middleware to validate login request body. |
-| `login` | `req`, `res` | JSON response | Handles the login request, validates input, authenticates user, and sends response. |
+| `validateLogin` | N/A | Array of validation middleware | Array of middleware functions to validate login request bodies. |
+| `login` | `req`, `res` | JSON response | Handles the login process, validates the request, authenticates the user, and sends an appropriate response. |
 
 #### Notes
 
-- The `validateLogin` middleware should be used in the route definition before the `login` controller.
-- Ensure that the `authenticateAdmin` service function is robust and handles edge cases like invalid credentials or database errors.
-- Error handling in the `login` function logs errors to the console and returns a generic server error message to the client to avoid exposing sensitive information.
+- The `validateLogin` middleware should be used in routes before the `login` controller to ensure that requests are validated.
+- The `login` function assumes that the request body contains `username` and `password` fields.
+- Error handling is done through Express's `res` object, returning appropriate HTTP status codes and messages.
+- Always ensure that sensitive information, such as passwords, is handled securely and logged minimally.
 
 ### backend/src/controllers/chatController.js
 
 #### Overview
 
-# Module Overview
-Handles chat-related API endpoints, including asking questions, continuing conversations, and managing conversations for admins.
+# backend/src/controllers/chatController.js
+
+#### Module Overview
+
+Handles chat-related API endpoints, including asking questions, fetching conversations, and managing conversation data.
 
 #### Dependencies
 
-- `askQuestion`, `addMessageToConversation`, `askQuestionWithDocument`, `askQuestionWithMultipleDocuments` from `../services/aiProxyService.js`: Functions to interact with AI services for question answering.
-- `Conversation` from `../models/index.js`: Mongoose model for chat conversations.
-- `body`, `validationResult` from `express-validator`: For input validation.
+- `askQuestion`, `addMessageToConversation`, `askQuestionWithDocument`, `askQuestionWithMultipleDocuments` from `../services/aiProxyService.js`: Functions to interact with the AI service for question handling.
+- `Conversation`, `Document` from `../models/index.js`: Mongoose models for conversation and document data.
+- `body`, `validationResult` from "express-validator": Middleware for request validation.
+- `generateSessionId`, `getRemoteAddress`, `getUserAgent` from `../utils/requestUtils.js`: Utility functions for request metadata.
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `validateQuestion` | None | Validation rules array | Express validator rules for question input |
-| `ask` | `req`, `res` | None | Handles asking a question, supports conversation tracking |
-| `askAboutDocument` | `req`, `res` | None | Handles asking a question about a specific document |
-| `getConversations` | `req`, `res` | None | Retrieves a paginated list of active conversations (admin only) |
-| `getConversation` | `req`, `res` | None | Retrieves a specific conversation by ID (admin only) |
-| `deleteConversation` | `req`, `res` | None | Deletes a specific conversation by ID (admin only) |
+| `validateQuestion` | - | Array | Express validator middleware for question validation. |
+| `ask` | `req`, `res` | Promise | Handles general chat question, supports conversation tracking. |
+| `askAboutDocument` | `req`, `res` | Promise | Handles question about a specific document. |
+| `getConversations` | `req`, `res` | Promise | Fetches a paginated list of active conversations (admin only). |
+| `getConversation` | `req`, `res` | Promise | Fetches a specific conversation by ID (admin only). |
+| `deleteConversation` | `req`, `res` | Promise | Deletes a specific conversation by ID (admin only). |
 
 #### Notes
 
-- The `ask` function first attempts a multi-document search if indexed documents are available, falling back to general chat if that fails.
-- Admin endpoints (`getConversations`, `getConversation`, `deleteConversation`) require appropriate permissions.
-- Error handling is done via try-catch blocks, with errors logged and appropriate HTTP status codes returned.
+- Error handling is done via try-catch blocks, with appropriate HTTP status codes and error messages sent in the response.
+- Fallback mechanism in `ask` function: If multi-document search fails, it falls back to a general chat question.
+- Admin-only endpoints (`getConversations`, `getConversation`, `deleteConversation`) require appropriate authentication middleware (not shown in this file).
 
 ### backend/src/controllers/documentController.js
 
@@ -986,36 +958,34 @@ Handles chat-related API endpoints, including asking questions, continuing conve
 
 # Document Controller
 
-This file defines the `documentController.js` which handles all the operations related to documents in the application. It interacts with the AI services to upload, retrieve, update, view, and delete documents.
+This file defines the `documentController.js` which handles all operations related to document management within the application. It includes uploading, retrieving, viewing, updating status, and deleting documents.
 
 #### Dependencies
 
-| Import | Purpose |
+| Import | Description |
 | --- | --- |
-| `uploadDocumentToAI`, `getIndexedDocuments`, `updateDocumentStatus`, `checkDocumentStatus`, `deleteDocumentFromAI` | Functions from `aiProxyService.js` to interact with AI services. |
-| `Document` | Mongoose model for documents. |
-| `body`, `validationResult` | Validation middleware from `express-validator`. |
-| `fs` | Node.js file system module for file operations. |
-| `path` | Node.js path module for handling file paths. |
+| `uploadDocumentToAI`, `getIndexedDocuments`, `updateDocumentStatus`, `checkDocumentStatus`, `deleteDocumentFromAI` | Functions from `aiProxyService.js` for interacting with AI services. |
+| `Document` | Mongoose model for document data. |
+| `body`, `validationResult` | Middleware and utilities from `express-validator` for request validation. |
+| `fs`, `path` | Node.js modules for file system operations and path manipulation. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `validateUpload` | N/A | Array of validation middleware | Validation rules for document upload. |
-| `uploadDocument` | `req`, `res` | JSON response | Handles document upload, validates input, and processes the upload. |
-| `getAnnouncements` | `req`, `res` | JSON response | Fetches all indexed documents from the AI service. |
-| `updateDocumentStatusWebhook` | `req`, `res` | JSON response | Webhook endpoint to update document status. |
-| `viewDocument` | `req`, `res` | File stream | Streams the document file to the client. |
-| `getDocumentStatus` | `req`, `res` | JSON response | Retrieves the status of a document. |
+| `validateUpload` | N/A | Array of validation middleware | Middleware to validate document upload requests. |
+| `uploadDocument` | `req`, `res` | JSON response | Handles document upload, validates input, and processes the upload through AI service. |
+| `getAnnouncements` | `req`, `res` | JSON response | Fetches and returns all indexed documents. |
+| `updateDocumentStatusWebhook` | `req`, `res` | JSON response | Webhook endpoint to update document status in the AI pipeline. |
+| `viewDocument` | `req`, `res` | File stream | Streams the requested document file to the client. |
+| `getDocumentStatus` | `req`, `res` | JSON response | Retrieves and returns the status of a document. |
 | `deleteDocument` | `req`, `res` | JSON response | Deletes a document from the AI service. |
 
 #### Notes
 
-- Ensure the file paths used in `viewDocument` are correctly set up in the file system.
-- Error handling is consistent across all functions, returning appropriate HTTP status codes and messages.
-- The `validateUpload` middleware should be used in routes that require document uploads.
-- The `updateDocumentStatusWebhook` expects specific fields in the request body for document ID and status.
+- Ensure that the file paths used in `viewDocument` are correctly set up in your file system.
+- The `deleteDocument` function only removes the document from the AI service, not from the file system.
+- Always handle errors gracefully and log them for debugging purposes.
 
 ### backend/src/middleware/auth.js
 
@@ -1023,7 +993,9 @@ This file defines the `documentController.js` which handles all the operations r
 
 # backend/src/middleware/auth.js
 
-This file contains middleware functions for authenticating requests, specifically for admin and optional user authentication.
+#### Module Overview
+
+This file contains middleware functions for authenticating requests, specifically for admin access and optional user context. It ensures that only authorized users can access certain routes and provides user information when available.
 
 #### Dependencies
 
@@ -1035,15 +1007,13 @@ This file contains middleware functions for authenticating requests, specificall
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `authenticateAdmin` | `req`, `res`, `next` | N/A | Authenticates admin requests by validating the Bearer token in the Authorization header. If the token is invalid or missing, it returns a 401 status. |
-| `optionalAuth` | `req`, `res`, `next` | N/A | Optionally authenticates user requests. If a valid token is present, it attaches user information to the request object. If the token is invalid or missing, it simply proceeds to the next middleware. |
+| `authenticateAdmin` | `req`, `res`, `next` | None | Authenticates admin requests by validating the JWT token in the Authorization header. If valid, adds user info to the request object and calls `next()`. If invalid, returns a 401 status with an error message. |
+| `optionalAuth` | `req`, `res`, `next` | None | Optionally authenticates requests by validating the JWT token in the Authorization header. If valid, adds user info to the request object. If invalid or no token is provided, simply calls `next()`. |
 
 #### Notes
 
-- The `authenticateAdmin` function is strict and ensures only authenticated admins can access certain routes.
-- The `optionalAuth` function is lenient and allows requests to proceed even if the token is missing or invalid, making it suitable for public endpoints that might benefit from user context.
-- Always ensure the `validateToken` function is robust and secure to prevent unauthorized access.
-- Error handling in both middlewares logs errors to the console and responds with appropriate HTTP statuses.
+- The `authenticateAdmin` middleware is strict and ensures that only requests with valid admin tokens proceed. It's meant for routes that require admin privileges.
+- The `optionalAuth` middleware is lenient and allows requests to proceed even if the token is invalid or missing. It's suitable for public endpoints that might benefit from having user context available.
 
 ### backend/src/middleware/rateLimiter.js
 
@@ -1051,13 +1021,13 @@ This file contains middleware functions for authenticating requests, specificall
 
 # Backend Middleware: Rate Limiter
 
-This file defines rate limiting middleware to prevent DDoS attacks and manage the number of requests from any single IP address.
+This file implements rate limiting middleware to protect our API from DDoS attacks and abuse. It uses the `express-rate-limit` package to set limits on the number of requests that can be made from a single IP address within a specified time window.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `express-rate-limit` | Provides rate limiting functionality for Express.js applications. |
+| `rateLimit` | A middleware function from the `express-rate-limit` package to enforce rate limiting. |
 
 #### Classes
 
@@ -1069,26 +1039,27 @@ This file defines rate limiting middleware to prevent DDoS attacks and manage th
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `apiLimiter` | N/A | Middleware | Limits general API requests to 100 per 15 minutes. |
-| `authLimiter` | N/A | Middleware | Limits authentication endpoint requests to 5 per 15 minutes. |
-| `chatLimiter` | N/A | Middleware | Limits chat/ask endpoint requests to 10 per minute. |
+| `apiLimiter` | N/A | Rate limiter middleware | Limits each IP to 100 requests per 15 minutes. |
+| `authLimiter` | N/A | Rate limiter middleware | Limits each IP to 5 login requests per 15 minutes. |
+| `chatLimiter` | N/A | Rate limiter middleware | Limits each IP to 10 chat requests per minute. |
 
 #### Configuration
 
-| Configuration | Value | Description |
-| --- | --- | --- |
-| `windowMs` | 15 minutes or 1 minute | Time window for rate limiting. |
-| `max` | 100, 5, or 10 | Maximum number of requests allowed per window. |
-| `message` | Custom error message | Response message when rate limit is exceeded. |
-| `standardHeaders` | `true` | Adds `RateLimit-*` headers with rate limit info. |
-| `legacyHeaders` | `false` | Disables `X-RateLimit-*` headers. |
+| Configuration | Purpose |
+| --- | --- |
+| `windowMs` | Defines the time window in milliseconds for the rate limit. |
+| `max` | Defines the maximum number of requests allowed within the time window. |
+| `message` | Custom error message and retry information for when the rate limit is exceeded. |
+| `standardHeaders` | Adds `RateLimit-*` headers with rate limit info. |
+| `legacyHeaders` | Disables `X-RateLimit-*` headers. |
 
 #### Notes
 
-- Each rate limiter is configured to send a custom error message when the rate limit is exceeded.
-- The `standardHeaders` option is enabled to provide rate limit information in the response headers.
-- The `legacyHeaders` option is disabled to avoid sending legacy rate limit headers.
-- Be mindful of the different rate limits set for general API requests, authentication endpoints, and the chat/ask endpoint.
+- The rate limits are set to prevent abuse and ensure fair usage of our API resources.
+- The `message` object provides a custom error message and retry information for clients that exceed the rate limits.
+- The `standardHeaders` option is enabled to include rate limit information in the response headers.
+- The `legacyHeaders` option is disabled to avoid using the older `X-RateLimit-*` headers in favor of the newer `RateLimit-*` headers.
+- Be mindful of the different rate limits for different endpoints to avoid inadvertently blocking legitimate users.
 
 ### backend/src/middleware/upload.js
 
@@ -1098,7 +1069,7 @@ This file defines rate limiting middleware to prevent DDoS attacks and manage th
 
 #### Module Overview
 
-This file defines middleware for handling file uploads in the backend. It uses the `multer` library to manage file uploads, including setting file size limits and filtering file types.
+This file handles file uploads in the backend, ensuring that only files of certain types and sizes are accepted. It uses the `multer` library to manage file uploads and provides error handling for upload-related issues.
 
 #### Dependencies
 
@@ -1109,24 +1080,24 @@ This file defines middleware for handling file uploads in the backend. It uses t
 
 #### Configuration
 
-| Variable | Default Value | Purpose |
-| -------- | ------------- | ------- |
-| `MAX_FILE_SIZE_MB` | 20 | Maximum file size allowed in megabytes. |
-| `ALLOWED_FILE_TYPES` | ["pdf"] | Array of allowed file types. |
+| Variable | Description |
+| -------- | ------------ |
+| `MAX_FILE_SIZE_MB` | Maximum file size allowed in megabytes, defaulting to 20MB. |
+| `ALLOWED_FILE_TYPES` | Array of allowed file types, defaulting to `pdf`. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | -------- | ---------- | ------- | ----------- |
-| `upload` | N/A | `multer` instance | Configures multer for file uploads with memory storage, file size limits, and file type filtering. |
-| `handleUploadError` | `error`, `req`, `res`, `next` | N/A | Middleware to handle errors from multer, providing appropriate responses for different error types. |
+| `upload` | N/A | `multer` instance | Configures multer for file uploads with memory storage and file size limits. |
+| `handleUploadError` | `error`, `req`, `res`, `next` | N/A | Middleware to handle errors from multer, responding with appropriate error messages. |
 
 #### Notes
 
 - The `upload` middleware is exported and can be used in routes to handle file uploads.
-- The `handleUploadError` middleware should be used after the `upload` middleware to handle any errors that occur during the upload process.
+- The `handleUploadError` middleware should be used after the `upload` middleware to handle any errors that occur during the file upload process.
 - Ensure environment variables `MAX_FILE_SIZE_MB` and `ALLOWED_FILE_TYPES` are set correctly to avoid default values.
-- The file types are checked against MIME types. Add more types to `allowedMimeTypes` if needed.
+- The file size limit is set in bytes by converting the `MAX_FILE_SIZE_MB` from megabytes.
 
 ### backend/src/models/AdminUser.js
 
@@ -1136,14 +1107,14 @@ This file defines middleware for handling file uploads in the backend. It uses t
 
 #### Module Overview
 
-This file defines the `AdminUser` model using Mongoose, which represents an administrative user in our application. It includes schema definitions, pre-save hooks for password hashing, and methods for password comparison and JSON serialization.
+This file defines the `AdminUser` model using Mongoose, which represents an administrative user in our application. It includes schema validation, password hashing, and a method to compare passwords.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `mongoose` | Provides schema and model definition capabilities for MongoDB. |
-| `bcrypt` | Used for hashing and comparing passwords. |
+| `mongoose` | Provides schema definition and model creation for MongoDB. |
+| `bcrypt` | Used for hashing and verifying passwords. |
 
 #### Classes
 
@@ -1153,17 +1124,18 @@ This file defines the `AdminUser` model using Mongoose, which represents an admi
 
 #### Functions
 
-There are no standalone functions in this file. All functionality is encapsulated within the `AdminUser` class.
+No standalone functions are defined in this file.
 
 #### Configuration
 
-There are no specific configurations in this file. The schema and model are defined directly.
+No specific configuration is defined in this file.
 
 #### Notes
 
-- The `pre` hook ensures that the password is hashed before saving the user to the database.
-- The `comparePassword` method is used to verify a user's password during login.
-- The `toJSON` method removes the password field from the JSON representation of the user to prevent it from being exposed.
+- The `comparePassword` method is essential for authenticating admin users.
+- The `toJSON` method ensures the password is not included in JSON responses.
+- Passwords are hashed with a cost factor of 12, which is a balance between security and performance.
+- Always handle errors appropriately when using the `comparePassword` method to avoid exposing sensitive information.
 
 ### backend/src/models/Conversation.js
 
@@ -1173,34 +1145,37 @@ There are no specific configurations in this file. The schema and model are defi
 
 #### Module Overview
 
-This file defines the `Conversation` model using Mongoose, which is used to manage conversations in the application. It includes schemas for both messages and conversations, and provides methods to interact with these models.
+This file defines the `Conversation` model using Mongoose, which represents a conversation between a user and a bot. It includes schemas for messages and conversations, along with methods to manipulate conversation data.
 
 #### Dependencies
 
 | Import | Purpose |
-| ------ | ------- |
-| `mongoose` | Provides schema and model support for MongoDB. |
+| --- | --- |
+| `mongoose` | Provides schema and model support for MongoDB interactions. |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
-| ----- | -------- | ----------- |
-| `Conversation` | Represents a conversation model. | `addMessage` |
+| --- | --- | --- |
+| `Conversation` | Represents a conversation in the database. | `addMessage` |
 
 #### Functions
 
-N/A
+| Function | Parameters | Returns | Description |
+| --- | --- | --- | --- |
+| `Conversation.addMessage` | `messageData` (object) | `Promise<Conversation>` | Adds a new message to the conversation and updates the last activity timestamp. |
 
 #### Configuration
 
-N/A
+- The `messageSchema` enforces constraints on message content, ensuring it has a sender, text, and optional sources.
+- The `conversationSchema` includes fields for session ID, start time, last activity, messages, user IP, user agent, and activity status.
+- Indexes are created on `startTime` and a compound index on `isActive` and `lastActivity`.
 
 #### Notes
 
-- The `addMessage` method automatically updates the `lastActivity` timestamp whenever a new message is added.
-- The `sessionId` field is unique and indexed for efficient querying.
-- The `messages` array stores `messageSchema` objects, ensuring each message adheres to the defined structure.
-- The `lastActivity` field is updated to the current date and time whenever a new message is added to maintain the most recent activity timestamp.
+- The `addMessage` method automatically updates the `lastActivity` timestamp to the current date and time whenever a new message is added.
+- Ensure that the `messageData` passed to `addMessage` conforms to the `messageSchema` requirements.
+- The `isActive` field is used to filter active conversations in queries.
 
 ### backend/src/models/Document.js
 
@@ -1210,64 +1185,64 @@ N/A
 
 #### Module Overview
 
-This file defines the `Document` model for our MongoDB database using Mongoose. It outlines the structure and validation rules for document records, ensuring consistency and integrity across the application.
+This file defines the `Document` model using Mongoose, which represents a document entity in our application. It includes properties like title, filename, and metadata related to file storage and processing status.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `mongoose` | Provides schema and model definition for MongoDB collections. |
+| `mongoose` | Provides schema and model creation for MongoDB. |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `Document` | Represents a document record in the database. | N/A |
+| `Document` | Represents a document entity in the database. | N/A |
 
 #### Functions
 
-There are no standalone functions in this file. The model is defined directly.
+| Function | Parameters | Returns | Description |
+| --- | --- | --- | --- |
+| N/A | N/A | N/A | N/A |
 
 #### Configuration
 
-- The schema includes validation rules for fields such as `title`, `filename`, and `size`.
-- Indexes are created on `status`, `uploadDate`, and `uploadedBy` to optimize query performance.
+- Schema options include `timestamps: true` for automatic `createdAt` and `updatedAt` fields.
 
 #### Notes
 
-- Ensure that the `AdminUser` model exists and is correctly referenced in the `uploadedBy` field.
-- The `status` field has predefined values (`processing`, `indexed`, `failed`) to manage the document's processing state.
+- The `status` field has a limited set of values: "processing", "indexed", and "failed".
 - The `uploadDate` field defaults to the current date and time when a document is created.
+- Indexes are created on `status`, `uploadDate`, and `uploadedBy` to optimize query performance.
 
 ### backend/src/models/index.js
 
 #### Overview
 
-# Backend Module Overview
+# Backend Models
 
-This file defines the core data models for the backend. It imports and exports three main classes: `AdminUser`, `Document`, and `Conversation`, which represent the primary entities in our application's data layer.
+This file defines the core data models for the backend, encapsulating the primary entities in our application.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `AdminUser` | Represents an administrative user in the system. |
-| `Document` | Represents a document entity within the application. |
-| `Conversation` | Represents a conversation entity, linking documents and users. |
+| `AdminUser` | Represents the admin user entity with associated methods and properties. |
+| `Document` | Represents the document entity with associated methods and properties. |
+| `Conversation` | Represents the conversation entity with associated methods and properties. |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `AdminUser` | Manages admin user data and operations. | `createAdminUser`, `updateAdminUser`, `deleteAdminUser` |
+| `AdminUser` | Manages admin user data and operations. | `createAdmin`, `updateAdmin`, `deleteAdmin` |
 | `Document` | Manages document data and operations. | `createDocument`, `updateDocument`, `deleteDocument` |
 | `Conversation` | Manages conversation data and operations. | `createConversation`, `updateConversation`, `deleteConversation` |
 
 #### Notes
 
-- Ensure to handle any exceptions or errors properly when interacting with these models.
-- These classes are designed to interact with the database, so any changes in the database schema will require corresponding updates here.
-- Always validate inputs when creating or updating any of these entities to maintain data integrity.
+- Each class is exported for use in other parts of the backend.
+- Ensure to handle any potential circular dependencies carefully when importing these models in other modules.
 
 ### backend/src/routes/authRoutes.js
 
@@ -1277,76 +1252,75 @@ This file defines the core data models for the backend. It imports and exports t
 
 #### Module Overview
 
-This file defines the authentication routes for the backend API. It handles the login endpoint, applying rate limiting and validation before passing control to the controller.
+This file defines the authentication routes for the backend API. It sets up the endpoint for admin login, ensuring that only valid credentials can be used to authenticate.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `express` | Framework for handling HTTP requests. |
-| `login`, `validateLogin` | Functions from `authController` to handle the login logic. |
-| `authLimiter` | Middleware to limit the number of login attempts to prevent brute force attacks. |
+| `express` | Provides the routing functionality. |
+| `login` | Handles the final step of the login process. |
+| `validateLogin` | Validates the incoming login credentials. |
+| `authLimiter` | Limits the number of login attempts to prevent brute force attacks. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `router.post('/login', authLimiter, validateLogin, login)` | `req, res` objects | `res` object with user data or error message | Defines the login route, applying rate limiting and validation before calling the login controller. |
+| `router.post('/login', authLimiter, validateLogin, login)` | `req`, `res` | `res` | Sets up the login route with middleware for rate limiting and validation before calling the login handler. |
 
 #### Notes
 
 - The `authLimiter` middleware is crucial for preventing brute force attacks on the login endpoint.
-- The `validateLogin` function performs necessary checks before the actual login logic is executed.
-- The `login` function handles the final step of the login process, sending back the appropriate response to the client.
+- The `validateLogin` function checks the incoming credentials against the stored data.
+- The `login` function finalizes the authentication process and sends back the appropriate response.
 
 ### backend/src/routes/chatRoutes.js
 
 #### Overview
 
-# Backend Chat Routes Documentation
+# Backend Module Documentation: `backend/src/routes/chatRoutes.js`
 
 #### Module Overview
 
-This file defines the route handlers for chat-related API endpoints. It handles requests to ask questions to the AI, retrieve conversations, and manage them, with specific endpoints restricted to admin users.
+This file defines the route handlers for chat-related API endpoints. It sets up the necessary routes for asking questions to the AI, managing conversations, and includes middleware for request validation and rate limiting.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
 | `express` | Framework for handling HTTP requests. |
-| `ask`, `validateQuestion`, `getConversations`, `getConversation`, `deleteConversation`, `askAboutDocument` | Functions from `chatController.js` to handle the business logic for chat operations. |
-| `authenticateAdmin` | Middleware to authenticate admin users. |
-| `chatLimiter`, `apiLimiter` | Middleware to apply rate limiting to chat and API endpoints. |
+| `../controllers/chatController.js` | Contains controller functions for handling chat-related logic. |
+| `../middleware/auth.js` | Provides authentication middleware for route protection. |
+| `../middleware/rateLimiter.js` | Provides rate limiting middleware to prevent abuse. |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `router` | Express router instance for defining chat routes. | N/A |
+| N/A | N/A | N/A |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `ask` | `req`, `res` | `Promise<void>` | Handles POST requests to ask a question to the AI. |
-| `validateQuestion` | `req`, `res`, `next` | `void` | Validates the question before processing it. |
-| `getConversations` | `req`, `res` | `Promise<void>` | Retrieves all conversations (admin only). |
-| `getConversation` | `req`, `res` | `Promise<void>` | Retrieves a specific conversation by ID (admin only). |
-| `deleteConversation` | `req`, `res` | `Promise<void>` | Deletes a conversation by ID (admin only). |
-| `askAboutDocument` | `req`, `res` | `Promise<void>` | Handles POST requests to ask a question about a specific document. |
+| `router` | N/A | Express Router instance | Sets up the chat-related routes. |
 
-#### Configuration
+#### Routes
 
-| Middleware | Purpose |
-| --- | --- |
-| `chatLimiter` | Limits the rate of chat-related requests to prevent abuse. |
-| `apiLimiter` | Limits the rate of API requests to prevent abuse. |
+| Route | Method | Handlers | Description |
+| --- | --- | --- | --- |
+| `/api/chat/ask` | POST | `chatLimiter`, `validateQuestion`, `ask` | Ask a question to the AI. |
+| `/api/chat/ask-document` | POST | `chatLimiter`, `validateQuestion`, `askAboutDocument` | Ask a question about a specific document. |
+| `/api/chat/conversations` | GET | `apiLimiter`, `authenticateAdmin`, `getConversations` | Get all conversations (admin only). |
+| `/api/chat/conversations/:id` | GET | `apiLimiter`, `authenticateAdmin`, `getConversation` | Get specific conversation (admin only). |
+| `/api/chat/conversations/:id` | DELETE | `apiLimiter`, `authenticateAdmin`, `deleteConversation` | Delete specific conversation (admin only). |
 
 #### Notes
 
-- All admin-only endpoints (`getConversations`, `getConversation`, `deleteConversation`) require authentication via `authenticateAdmin` middleware.
-- Rate limiting is applied to all chat-related endpoints to protect the system from excessive requests.
-- The `ask` and `askAboutDocument` functions rely on `validateQuestion` to ensure the incoming request data is valid before processing.
+- All admin-only routes require authentication and are rate-limited.
+- The `chatLimiter` and `apiLimiter` middleware are used to prevent excessive requests.
+- The `validateQuestion` middleware ensures that the incoming request payload is valid before passing it to the controller functions.
 
 ### backend/src/routes/documentRoutes.js
 
@@ -1356,7 +1330,7 @@ This file defines the route handlers for chat-related API endpoints. It handles 
 
 #### Module Overview
 
-This file defines the routes for handling document-related operations in the backend. It sets up endpoints for uploading, viewing, deleting, and managing the status of documents, with appropriate authentication and rate limiting.
+This file defines the routes for handling document-related operations in the backend. It sets up endpoints for uploading, viewing, deleting, and managing the status of documents, with administrative access controls in place.
 
 #### Dependencies
 
@@ -1365,39 +1339,35 @@ This file defines the routes for handling document-related operations in the bac
 | `express` | Framework for setting up HTTP routes. |
 | `getAnnouncements` | Controller function to fetch all uploaded documents. |
 | `uploadDocument` | Controller function to handle document uploads. |
-| `validateUpload` | Middleware to validate document upload. |
-| `updateDocumentStatusWebhook` | Controller function to handle webhook updates for document status. |
+| `validateUpload` | Controller function to validate document upload. |
+| `updateDocumentStatusWebhook` | Controller function to handle webhook updates for document processing status. |
 | `viewDocument` | Controller function to view document content. |
 | `deleteDocument` | Controller function to delete a document. |
-| `getDocumentStatus` | Controller function to fetch document status. |
+| `getDocumentStatus` | Controller function to get document processing status. |
 | `authenticateAdmin` | Middleware to authenticate admin users. |
-| `upload` | Middleware for handling file uploads. |
-| `handleUploadError` | Middleware to handle errors during file uploads. |
+| `upload` | Middleware to handle file uploads. |
+| `handleUploadError` | Middleware to handle errors during file upload. |
 | `apiLimiter` | Middleware to limit the rate of API requests. |
-
-#### Classes
-
-| Class | Purpose | Key Methods |
-| --- | --- | --- |
-| `router` | Express router instance for document routes. | N/A |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `router.get("/announcements", apiLimiter, getAnnouncements)` | None | Array of documents | Retrieves all uploaded documents. |
-| `router.post("/upload", apiLimiter, authenticateAdmin, upload.single("document"), handleUploadError, validateUpload, uploadDocument)` | `req`, `res` | None | Handles document uploads, restricted to admin users. |
-| `router.get("/:id/view", authenticateAdmin, viewDocument)` | `req`, `res` | Document content | Retrieves the content of a specific document, restricted to admin users. |
-| `router.get("/:id/status", authenticateAdmin, getDocumentStatus)` | `req`, `res` | Document status | Retrieves the processing status of a specific document, restricted to admin users. |
-| `router.delete("/:id", authenticateAdmin, deleteDocument)` | `req`, `res` | None | Deletes a specific document, restricted to admin users. |
-| `router.post("/webhook", updateDocumentStatusWebhook)` | `req`, `res` | None | Updates document status based on webhook notifications. |
+| `router.get("/announcements", apiLimiter, getAnnouncements)` | None | List of documents | Fetches all uploaded documents. |
+| `router.post("/upload", apiLimiter, authenticateAdmin, upload.single("document"), handleUploadError, validateUpload, uploadDocument)` | `req, res` | Uploaded document info | Handles document uploads, restricted to admin users. |
+| `router.get("/:id/view", authenticateAdmin, viewDocument)` | `req, res` | Document content | Views document content, restricted to admin users. |
+| `router.get("/:id/status", authenticateAdmin, getDocumentStatus)` | `req, res` | Document status | Retrieves document processing status, restricted to admin users. |
+| `router.delete("/:id", authenticateAdmin, deleteDocument)` | `req, res` | Deleted document info | Deletes a document, restricted to admin users. |
+| `router.post("/webhook", updateDocumentStatusWebhook)` | `req, res` | Updated document status | Handles webhook updates for document processing status. |
 
 #### Notes
 
 - All routes requiring admin access are protected by the `authenticateAdmin` middleware.
-- File uploads are handled by the `upload` middleware, with error handling provided by `handleUploadError`.
 - The `apiLimiter` middleware is applied to prevent abuse of the document endpoints.
+- The `upload` middleware handles file uploads and expects a single file with the key `document`.
+- Errors during file upload are caught and handled by the `handleUploadError` middleware.
 - The `validateUpload` function ensures that only valid documents are processed.
+- The `uploadDocument` function is called after successful validation to store the document in the system.
 
 ### backend/src/routes/index.js
 
@@ -1405,110 +1375,109 @@ This file defines the routes for handling document-related operations in the bac
 
 # Backend Module Overview
 
-This file defines the main entry point for routing in the backend application. It imports and mounts various route modules and provides a health check endpoint to ensure the API is running correctly.
+This file defines the main routing layer for the backend application. It sets up the Express router and mounts various route modules, providing a clean and organized way to handle incoming HTTP requests.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `express` | Provides the core functionality for creating and managing routes. |
-| `authRoutes` | Route module for authentication-related endpoints. |
-| `documentRoutes` | Route module for document management endpoints. |
+| `express` | Core library for setting up the router. |
+| `authRoutes` | Route module for authentication endpoints. |
+| `documentRoutes` | Route module for document-related endpoints. |
 | `chatRoutes` | Route module for chat-related endpoints. |
-| `telegramRoutes` | Route module for Telegram integration endpoints. |
+| `telegramRoutes` | Route module for Telegram-related endpoints. |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `router` | Express router instance used to manage routes. | `router.use()`, `router.get()` |
+| `router` | Express Router instance used to mount route modules and define the health check endpoint. | `router.use()`, `router.get()` |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `router.use("/auth", authRoutes)` | `authRoutes` | None | Mounts the authentication routes. |
-| `router.use("/documents", documentRoutes)` | `documentRoutes` | None | Mounts the document management routes. |
-| `router.use("/chat", chatRoutes)` | `chatRoutes` | None | Mounts the chat routes. |
-| `router.use("/telegram", telegramRoutes)` | `telegramRoutes` | None | Mounts the Telegram integration routes. |
-| `router.get("/health",...)` | `req, res` | JSON response | Health check endpoint returning the status of the API. |
+| `router.use("/auth", authRoutes)` | `authRoutes` | None | Mounts the authentication route module. |
+| `router.use("/documents", documentRoutes)` | `documentRoutes` | None | Mounts the document-related route module. |
+| `router.use("/chat", chatRoutes)` | `chatRoutes` | None | Mounts the chat-related route module. |
+| `router.use("/telegram", telegramRoutes)` | `telegramRoutes` | None | Mounts the Telegram-related route module. |
+| `router.get("/health",...)` | `req`, `res` | JSON response | Health check endpoint returning the status of the API. |
 
 #### Notes
 
-- Each route module is mounted under a specific prefix, ensuring clean and organized routing.
-- The health check endpoint is a simple way to verify that the API is operational.
-- Ensure all route modules are correctly implemented and tested to avoid runtime errors.
+- The `router` instance is configured to mount several route modules at specific paths.
+- The health check endpoint at `/health` provides a simple way to verify the API is running.
+- Each route module (`authRoutes`, `documentRoutes`, etc.) should be well-documented separately as they contain the specific logic for their respective endpoints.
 
 ### backend/src/routes/telegramRoutes.js
 
 #### Overview
 
-# Module Overview
-This file defines routes for handling Telegram bot interactions. It includes rate limiting, request validation, and endpoints for asking questions and performing health checks.
+# `backend/src/routes/telegramRoutes.js`
+
+Handles Telegram bot interactions, including asking questions, asking questions about specific documents, and health checks.
 
 #### Dependencies
 
-- `express`: Web framework for handling HTTP requests.
+- `express`: Web framework for defining routes and middleware.
 - `express-validator`: Middleware for validating incoming requests.
 - `aiProxyService`: Service module for interacting with AI-related functionalities.
 - `express-rate-limit`: Middleware for applying rate limiting to routes.
 
 #### Functions
 
-| Function                   | Parameters        | Returns   | Description                                                                                     |
-|----------------------------|-------------------|-----------|-------------------------------------------------------------------------------------------------|
-| `validateTelegramRequest`  | -                 | Array     | Validation rules for Telegram bot requests.                                                     |
-| `telegramAsk`              | `req`, `res`      | -         | Handles asking a question via Telegram bot.                                                      |
-| `telegramAskDocument`      | `req`, `res`      | -         | Handles asking a question about a specific document via Telegram bot.                           |
-| `telegramHealthCheck`      | `req`, `res`      | -         | Provides a health check endpoint for the Telegram bot.                                          |
+| Function                 | Parameters                 | Returns   | Description                                                                                       |
+|--------------------------|----------------------------|-----------|---------------------------------------------------------------------------------------------------|
+| `telegramAsk`            | `req`, `res`               | `Promise` | Handles asking a question via Telegram bot. Validates request, interacts with AI service, and formats response. |
+| `telegramAskDocument`    | `req`, `res`               | `Promise` | Handles asking a question about a specific document via Telegram bot. Similar flow to `telegramAsk`. |
+| `telegramHealthCheck`    | `req`, `res`               | `Promise` | Provides a health check endpoint for the Telegram bot. Returns basic health status and system metrics. |
 
 #### Configuration
 
-- `telegramRateLimit`: Rate limiting configuration for Telegram bot requests.
+- `telegramRateLimit`: Rate limiting configuration for Telegram bot requests. Allows 10 requests per minute per IP.
 
 #### Notes
 
-- Rate limiting is more restrictive for Telegram bot requests to prevent abuse.
-- Validation rules ensure that required fields are present and correctly formatted.
-- Error handling is implemented to return appropriate status codes and error messages.
-- Health check endpoint provides basic status information about the Telegram bot service.
+- Rate limiting is applied to all Telegram routes using `router.use(telegramRateLimit)`.
+- Validation rules for Telegram requests are defined in `validateTelegramRequest` and extended for document-specific queries in `telegramAskDocument`.
+- Error handling includes logging errors to the console and returning appropriate error responses to the client.
+- Unique session IDs are generated for Telegram users to maintain conversation state.
+- Health check endpoint provides basic system metrics for monitoring bot health.
 
 ### backend/src/services/aiProxyService.js
 
 #### Overview
 
-# aiProxyService.js Documentation
-
-#### Module Overview
-
-This file acts as an intermediary between our application and the AI pipeline. It handles document uploads, document retrieval, and question-answering interactions with the AI.
+# Module Overview
+This file handles interactions with the AI pipeline for document processing and question answering. It includes functions for uploading documents, retrieving indexed documents, asking questions, and adding messages to conversations.
 
 #### Dependencies
 
-- `Document`, `Conversation` from `../models/index.js`: Mongoose models for database interactions.
+- `Document`, `Conversation` from `../models/index.js`: Mongoose models for documents and conversations.
 - `axios`: HTTP client for making requests to the AI pipeline.
-- `fs`: Node.js File System module for file operations.
-- `path`: Node.js Path module for handling file paths.
+- `fs`, `path`: Node.js modules for file system operations.
+- `truncateMessage`, `ensureUploadsDir` from `../utils/index.js`: Utility functions for message truncation and ensuring the uploads directory exists.
 
 #### Configuration
 
-- `AI_PIPELINE_URL`: URL of the AI pipeline service. Defaults to `http://localhost:8001` if not set.
-- `MOCK_MODE`: Boolean indicating whether to use mock responses. Enabled if `process.env.MOCK_AI_PIPELINE` is `true`.
+- `AI_PIPELINE_URL`: URL of the AI pipeline service, defaults to `http://localhost:8001`.
+- `MOCK_MODE`: Boolean indicating whether to use mock responses, set via `process.env.MOCK_AI_PIPELINE`.
 
 #### Functions
 
-| Function                   | Parameters                                    | Returns                                                                                              | Description                                                                                       |
-|----------------------------|-----------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
-| `truncateMessage`          | `text` (string), `maxLength` (number)          | `string`                                                                                             | Safely truncates a message, attempting to cut at a sentence boundary.                             |
-| `uploadDocumentToAI`       | `file` (object), `title` (string), `uploadedBy` (string) | `Promise<object>`                                                                                    | Uploads a document to the AI pipeline, saves it to the database, and updates the document status. |
-| `getIndexedDocuments`      | None                                          | `Promise<object>`                                                                                    | Retrieves all indexed documents from the database.                                                |
-| `askQuestion`              | `question` (string), `sessionId` (string), `userIp` (string), `userAgent` (string) | `Promise<object>`                                                                                    | Sends a question to the AI, saves the conversation, and returns the AI's response.                |
+| Function                      | Parameters                                                                                       | Returns                                                                                              | Description                                                                                       |
+|-------------------------------|--------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------|
+| `uploadDocumentToAI`          | `file`, `title`, `uploadedBy`                                                                    | Object with `success`, `message`, and `document` properties                                          | Uploads a document to the AI pipeline, saves it to the database, and updates the document status. |
+| `getIndexedDocuments`         | None                                                                                             | Object with `success` and `documents` properties                                                     | Retrieves all indexed documents from the database.                                                |
+| `askQuestion`                 | `question`, `sessionId`, `userIp`, `userAgent`                                                    | Object with `success`, `response`, `content_type`, `sources`, `top_source_suggestions`, `conversationId`, `documentsSearched` properties | Sends a question to the AI pipeline, retrieves the response, and saves the conversation.         |
+| `addMessageToConversation`    | `conversationId`, `message`, `sessionId`                                                          | Result of `askQuestion`                                                                              | Adds a message to an existing conversation or starts a new one if the conversation is not found. |
 
 #### Notes
 
-- The `uploadDocumentToAI` function handles both mock and real AI pipeline interactions based on the `MOCK_MODE` configuration.
-- The `askQuestion` function provides mock responses in `MOCK_MODE`, simulating varied and helpful answers based on the question content.
-- Error handling is implemented throughout to manage issues with the AI pipeline or database operations, ensuring graceful degradation and informative error messages.
+- The `uploadDocumentToAI` function handles both mock and real AI pipeline integration based on the `MOCK_MODE` configuration.
+- The `askQuestion` function provides mock responses in `MOCK_MODE` and integrates with the real AI pipeline otherwise.
+- Error handling is implemented for both document uploads and question asking, with specific checks for OpenAI API key issues.
+- Conversations are saved to the database, and messages are truncated if they exceed validation limits.
 
 ### backend/src/services/authService.js
 
@@ -1525,23 +1494,24 @@ This file handles authentication-related tasks for the admin user, including cre
 | Import | Purpose |
 | --- | --- |
 | `AdminUser` | Mongoose model for the admin user. |
-| `generateToken`, `verifyToken` | Utility functions for generating and verifying JWT tokens. |
+| `generateToken` | Utility function to create JWT tokens. |
+| `verifyToken` | Utility function to verify JWT tokens. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
 | `createDefaultAdmin` | None | None | Creates a default admin user if it doesn't already exist. |
-| `authenticateAdmin` | `username`, `password` | `{ success: boolean, message: string, user: object, token: string }` | Authenticates an admin user and returns a JWT token if successful. |
-| `validateToken` | `token` | `{ success: boolean, message: string, user: object }` | Validates a JWT token and returns user information if valid. |
-| `getUserById` | `userId` | `AdminUser` or throws an error | Fetches an admin user by their ID. |
+| `authenticateAdmin` | `username`, `password` | Object with `success`, `message`, `user`, and `token` properties | Authenticates an admin user and returns a JWT token if credentials are valid. |
+| `validateToken` | `token` | Object with `success` and `message` properties | Validates a JWT token and returns user details if valid. |
+| `getUserById` | `userId` | Mongoose `AdminUser` document or throws an error | Fetches an admin user by their ID. |
 
 #### Notes
 
-- The `createDefaultAdmin` function uses a hardcoded password for the default admin user. This is intended for development purposes only and should be replaced with a secure method in production.
-- The `authenticateAdmin` function returns a JWT token upon successful authentication. This token should be securely stored and sent in the Authorization header for subsequent requests.
-- The `validateToken` function checks if the user associated with the token still exists in the database. If the user is not found, the token is considered invalid.
-- Error handling in this file logs errors to the console. For production, consider using a more robust logging mechanism.
+- The `createDefaultAdmin` function uses a hardcoded password for the default admin user. This is not secure for production environments and should be replaced with a more secure method.
+- The `authenticateAdmin` function returns a JWT token upon successful authentication. Ensure that this token is securely stored and transmitted.
+- The `validateToken` function checks if the user still exists in the database when validating a token. This helps to prevent using tokens from deleted accounts.
+- Always handle errors and edge cases in the calling functions when using these service functions.
 
 ### backend/src/utils/jwtUtils.js
 
@@ -1549,13 +1519,13 @@ This file handles authentication-related tasks for the admin user, including cre
 
 # Backend Module: `backend/src/utils/jwtUtils.js`
 
-This file provides utilities for handling JSON Web Tokens (JWT) in our application. It includes functions to generate, verify, and decode tokens, ensuring secure authentication and authorization.
+This file provides utilities for handling JSON Web Tokens (JWT) in our application. It includes functions to generate, verify, and decode JWTs.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `jsonwebtoken` | Library for creating, verifying, and decoding JWTs. |
+| `jsonwebtoken` | A library for working with JWTs. |
 
 #### Classes
 
@@ -1567,22 +1537,22 @@ This file provides utilities for handling JSON Web Tokens (JWT) in our applicati
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `generateToken` | `payload` (object) | `string` | Generates a JWT with the provided payload. |
-| `verifyToken` | `token` (string) | `object` or `Error` | Verifies the JWT and returns the payload if valid. Throws an error if invalid or expired. |
-| `decodeToken` | `token` (string) | `object` or `Error` | Decodes the JWT without verification and returns the payload. |
+| `generateToken` | `payload` | `string` | Generates a JWT with the provided payload. |
+| `verifyToken` | `token` | `object` or `Error` | Verifies the JWT and returns the payload if valid. Throws an error if invalid or expired. |
+| `decodeToken` | `token` | `object` or `Error` | Decodes the JWT to return its payload without verification. Throws an error if decoding fails. |
 
 #### Configuration
 
-| Constant | Default Value | Description |
-| --- | --- | --- |
-| `JWT_SECRET` | `"campusmitra_jwt_secret_key_2024_very_secure_random_string"` | Secret key used for signing the JWT. Should be a long, random string in production. |
-| `JWT_EXPIRES_IN` | `"7d"` | Default expiration time for the JWT. |
+| Constant | Purpose |
+| --- | --- |
+| `JWT_SECRET` | Secret key used for signing JWTs. |
+| `JWT_EXPIRES_IN` | Duration for which the JWT is valid. |
 
 #### Notes
 
-- In production, `JWT_SECRET` should be managed securely, ideally through environment variables or a secrets management service.
-- The `generateToken` function includes issuer and audience fields to add additional security checks during verification.
-- Always handle errors from `verifyToken` and `decodeToken` appropriately to avoid exposing sensitive information.
+- `JWT_SECRET` should be a long, random string in production.
+- Always handle errors from these functions to avoid exposing sensitive information.
+- `JWT_EXPIRES_IN` defaults to "7 days" but can be overridden in the environment variables.
 
 ### chatbot-rag-langchain-main/README.md
 
@@ -1590,129 +1560,109 @@ This file provides utilities for handling JSON Web Tokens (JWT) in our applicati
 
 # Module Overview
 
-The `README.md` file provides a comprehensive guide on how to set up, run, and understand the chatbot application built using Retrieval-Augmented Generation (RAG) and LangChain. It outlines the project structure, installation steps, and how the application works.
+The `README.md` file provides an overview and instructions for setting up and running a Streamlit-based chatbot that uses Retrieval-Augmented Generation (RAG) and LangChain. It serves as a guide for users to understand the project's features, dependencies, and how to get started with the application.
 
-# Dependencies
+#### Dependencies
 
 | Import | Purpose |
 | --- | --- |
 | `streamlit` | UI framework for the chatbot |
 | `langchain` | For PDF parsing and chunking |
 | `faiss-cpu` | Vector search backend |
-| `openai` | For LLM-based answer generation |
-| `pypdf2` | For PDF parsing |
-| `os` | For file and directory operations |
-| `st.cache_resource` | Streamlit's caching mechanism |
+| `openai` | For accessing GPT models |
+| `pypdf2` | For parsing PDF files |
 
-# Classes
-
-| Class | Purpose | Key Methods |
-| --- | --- | --- |
-| `Document` | Represents a chunk of text from a document with metadata | `__init__(text, metadata)` |
-
-# Functions
+#### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `parse_pdf` | `file` | `list` | Extracts text from a PDF file |
-| `text_to_docs` | `text` | `list` | Splits text into chunks and attaches metadata |
-| `docs_to_index` | `docs`, `embeddings` | `FAISS` | Creates a FAISS index from documents |
-| `get_index_for_pdf` | `pdfs`, `filenames`, `api_key` | `FAISS` | Orchestrates PDF parsing, chunking, embedding, and indexing |
-| `save_index_local` | `vectordb`, `path` | `None` | Saves the FAISS index to a local file |
-| `load_index_local` | `path`, `api_key` | `FAISS` | Loads a FAISS index from a local file |
+| `save_index_local` | `vectordb: FAISS, path: str` | None | Saves the FAISS index to a local directory |
+| `load_index_local` | `path: str, openai_api_key: str` | `FAISS` | Loads a FAISS index from a local directory |
 
-# Configuration
-
-- **OPENAI_API_KEY**: Required for accessing the OpenAI API. Store it in `.streamlit/secrets.toml` or as an environment variable.
-
-# Notes
+#### Notes
 
 - Ensure the `OPENAI_API_KEY` is set either in the `.streamlit/secrets.toml` file or as an environment variable.
-- Uploaded PDFs are stored in memory and are not persisted to disk by default.
-- The FAISS index is stored in memory and will be cleared on server restart unless optional persistence is implemented.
-- The application uses Streamlit for the UI and LangChain for PDF parsing and retrieval.
+- The FAISS index is stored in-memory by default. For persistence across restarts, use the provided `save_index_local` and `load_index_local` functions.
+- Uploaded PDFs are not persisted to disk and are only stored in memory during the session.
 
 ### chatbot-rag-langchain-main/app.py
 
 #### Overview
 
-# `chatbot-rag-langchain-main/app.py`
+# Module Overview
 
-#### Module Overview
-
-This file is the entry point for a Streamlit-based chatbot application that leverages Retrieval-Augmented Generation (RAG) to provide answers based on uploaded PDF files. It integrates with the `openai` library for accessing the language model and `brain` for creating a vector database from the PDFs.
+The `chatbot-rag-langchain-main/app.py` file implements a Streamlit-based chatbot that leverages Retrieval-Augmented Generation (RAG) to answer user questions based on provided PDF files. It uses the `openai` library to interact with the GPT model and `streamlit` to create the web interface.
 
 #### Dependencies
 
-| Library | Purpose |
-| --- | --- |
-| `streamlit` | Provides the web interface for the chatbot |
-| `openai` | Accesses the language model for generating responses |
-| `brain` | Contains the function to create a vector database from PDFs |
-| `os` | Handles environment variables for API keys |
+| Import | Purpose |
+| ------ | ------- |
+| `streamlit as st` | Provides the web interface for the chatbot. |
+| `openai` | Interacts with the GPT model to generate responses. |
+| `brain` | Contains the function to create a vector database from PDF files. |
+| `os` | Handles environment variables for API keys. |
+| `utils` | Contains utility functions, such as loading the API key. |
 
 #### Classes
 
-There are no classes defined in this file.
+No classes are defined in this file.
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
-| --- | --- | --- | --- |
-| `_load_openai_key` | None | `key` | Loads the `OPENAI_API_KEY` from Streamlit secrets or environment variables |
+| -------- | ---------- | ------- | ----------- |
+| `create_vectordb` | `files`, `filenames` | `vectordb` | Creates a vector database from the provided PDF files. |
 
 #### Configuration
 
-The `OPENAI_API_KEY` is loaded from either Streamlit secrets or environment variables. If not set, an error is displayed and the app stops.
+- `OPENAI_API_KEY`: The API key for the `openai` service, loaded from either Streamlit secrets or environment variables.
 
 #### Notes
 
 - Ensure the `OPENAI_API_KEY` is set either in `.streamlit/secrets.toml` or as an environment variable.
-- The `create_vectordb` function is cached to avoid recreating the vector database on every interaction.
-- The chatbot uses a prompt template to format the context from the PDFs before querying the language model.
-- The Streamlit session state is used to persist the chatbot's context between interactions.
+- The `create_vectordb` function is cached to avoid recreating the vector database on every request.
+- The chatbot uses a prompt template to format the user's question and the relevant PDF content for the GPT model.
+- The Streamlit session state is used to persist the chatbot's state across interactions.
 
 ### chatbot-rag-langchain-main/brain.py
 
 #### Overview
 
-# chatbot-rag-langchain-main/brain.py
+# Module Overview
 
-#### Module Overview
+The `brain.py` file is the core of our chatbot's knowledge base. It processes PDF files, extracts text, splits it into manageable chunks, and creates an indexed vector store for efficient retrieval of information.
 
-This file is the core processing unit for the chatbot's retrieval-augmented generation (RAG) system. It handles the ingestion of PDF files, splits the text into manageable chunks, embeds these chunks into a vector space, and creates an index for efficient retrieval.
-
-#### Dependencies
+# Dependencies
 
 | Import | Purpose |
 | --- | --- |
 | `re` | Regular expressions for text processing. |
-| `BytesIO` | In-memory file-like object for handling PDF data. |
-| `Tuple`, `List` | Type hints for function signatures. |
-| `pickle` | Serialization and deserialization of Python objects. |
-| `Document` | Document class from `langchain_core.documents`. |
-| `OpenAIEmbeddings` | Embeddings from `langchain_openai`. |
-| `RecursiveCharacterTextSplitter` | Text splitter from `langchain_text_splitters`. |
-| `FAISS` | Vector store from `langchain_community.vectorstores`. |
-| `PdfReader` | PDF reader from `pypdf`. |
-| `faiss` | Library for efficient similarity search and clustering of dense vectors. |
+| `BytesIO` | In-memory binary stream for handling PDF files. |
+| `Tuple`, `List` | Type hints for function parameters and return types. |
+| `pickle` | Serialization and deserialization of Python object structures. |
+| `Document` | Represents a document in the LangChain framework. |
+| `OpenAIEmbeddings` | Generates embeddings using the OpenAI API. |
+| `RecursiveCharacterTextSplitter` | Splits text into chunks based on specified delimiters. |
+| `FAISS` | A library for efficient similarity search and clustering of dense vectors. |
+| `PdfReader` | Extracts text from PDF files. |
+| `faiss` | A library for efficient similarity search and clustering of dense vectors. |
 
-#### Functions
+# Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
 | `parse_pdf` | `file: BytesIO`, `filename: str` | `Tuple[List[str], str]` | Extracts text from a PDF file and returns a list of page texts and the filename. |
-| `text_to_docs` | `text: List[str]`, `filename: str` | `List[Document]` | Converts a list of text pages into a list of `Document` objects, each representing a chunk of text. |
-| `docs_to_index` | `docs`, `openai_api_key` | `FAISS` | Creates a FAISS index from a list of documents using embeddings from `OpenAIEmbeddings`. |
-| `get_index_for_pdf` | `pdf_files`, `pdf_names`, `openai_api_key` | `FAISS` | Processes a list of PDF files, converts them to documents, and creates an index for retrieval. |
+| `text_to_docs` | `text: List[str]`, `filename: str` | `List[Document]` | Converts a list of text pages into a list of `Document` objects with metadata. |
+| `docs_to_index` | `docs: List[Document]`, `openai_api_key: str` | `FAISS` | Creates a FAISS index from a list of documents using the provided API key. |
+| `get_index_for_pdf` | `pdf_files: List[bytes]`, `pdf_names: List[str]`, `openai_api_key: str` | `FAISS` | Processes a list of PDF files, extracts text, splits it into chunks, and creates an indexed vector store. |
 
-#### Notes
+# Notes
 
-- Ensure that the `openai_api_key` is securely managed and not hard-coded in production environments.
-- The `parse_pdf` function uses regular expressions to clean up text extracted from PDFs. This may need adjustments based on the specific formatting of the PDFs.
-- The `text_to_docs` function splits text into chunks based on certain separators. The chunk size and separators can be tuned for better performance and relevance.
-- The `docs_to_index` function relies on `OpenAIEmbeddings`, which requires an active API key from OpenAI.
-- The `get_index_for_pdf` function is a high-level function that orchestrates the entire process from PDF parsing to indexing. It's designed to handle multiple PDFs at once.
+- Ensure that the `openai_api_key` is kept secure and not exposed in the codebase.
+- The `parse_pdf` function relies on `PyPDF2` to extract text from PDF files. Ensure that the library is installed and up-to-date.
+- The `text_to_docs` function splits text into chunks of 4000 characters. Adjust the `chunk_size` parameter as needed based on the content of the documents.
+- The `docs_to_index` function uses the `OpenAIEmbeddings` class to generate embeddings. This requires an active API key from OpenAI.
+- The `get_index_for_pdf` function is a higher-level function that orchestrates the entire process of creating an index from a list of PDF files.
 
 ### chatbot-rag-langchain-main/requirements.txt
 
@@ -1720,27 +1670,27 @@ This file is the core processing unit for the chatbot's retrieval-augmented gene
 
 # Module Overview
 
-This file lists the dependencies required to run the chatbot project built with the RAG (Retrieval-Augmented Generation) framework using LangChain. It ensures that all necessary libraries and packages are installed for the project to function correctly.
+This file, `requirements.txt`, lists the Python dependencies required to run the chatbot project built with LangChain. It ensures that all necessary libraries are installed and up-to-date, facilitating smooth development and deployment.
 
 #### Dependencies
 
 | Dependency | Purpose |
 |------------|---------|
-| `openai` | Provides access to the OpenAPI, enabling integration with the Open Assistant API. |
-| `streamlit` | A framework for creating interactive web applications for data science and machine learning projects. |
-| `langchain` | A library for building applications with large language models (LLMs). |
-| `langchain-core` | Core components of the LangChain library. |
-| `langchain-community` | Community-contributed extensions for LangChain. |
-| `langchain-openai` | Integration with the Open Assistant API within LangChain. |
-| `faiss-cpu` | A library for efficient similarity search and clustering of data. |
-| `pypdf` | A library for reading and writing PDF files. |
-| `tiktoken` | A tokenizer for text encoding and decoding, useful for working with large language models. |
+| `openai` | Provides access to the OpenAPI language model for generating chatbot responses. |
+| `streamlit` | A framework for building interactive web applications, used here for the chatbot's frontend. |
+| `langchain` | Core library for building applications that leverage language models. |
+| `langchain-core` | Essential components and utilities for LangChain. |
+| `langchain-community` | Community-contributed plugins and extensions for LangChain. |
+| `langchain-openai` | Integration layer for using OpenAPI with LangChain. |
+| `faiss-cpu` | CPU-based implementation of the Fast Approximate Nearest Neighbors in High Dimensions (FAISS) library for efficient similarity search. |
+| `pypdf` | Library for reading and writing PDF files. |
+| `tiktoken` | Tokenizer for encoding and decoding text using the Byte-Pair Encoding (BPE) algorithm. |
 
 #### Notes
 
 - Ensure all dependencies are compatible with the current Python version used in the project.
-- Regularly update `requirements.txt` to include new dependencies as they are added to the project.
-- Some dependencies may have specific version requirements; check the project's documentation for details.
+- Regularly check for updates to these libraries to incorporate the latest features and security patches.
+- Some dependencies may have specific installation instructions or requirements, especially `faiss-cpu` and `tiktoken`.
 
 ### frontend/README.md
 
@@ -1750,34 +1700,35 @@ This file lists the dependencies required to run the chatbot project built with 
 
 #### Module Overview
 
-This file provides a minimal setup to get React working in Vite with Hot Module Replacement (HMR) and some ESLint rules. It includes two official plugins for React support in Vite: one using Babel and another using SWC for Fast Refresh.
+This file provides a minimal setup to get React working in Vite with Hot Module Replacement (HMR) and some ESLint rules. It includes two official plugins for React with Vite: one using Babel for Fast Refresh and another using SWC for Fast Refresh.
 
 #### Dependencies
 
-- **@vitejs/plugin-react**: Uses Babel for Fast Refresh.
-- **@vitejs/plugin-react-swc**: Uses SWC for Fast Refresh.
+| Import | Purpose |
+| --- | --- |
+| `@vitejs/plugin-react` | Uses Babel for Fast Refresh |
+| `@vitejs/plugin-react-swc` | Uses SWC for Fast Refresh |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| ReactComponent | Base class for all React components | render(), setState() |
+| N/A | N/A | N/A |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| setupReactPlugin | `plugin` | `void` | Sets up the chosen React plugin in Vite. |
+| `setupReactPlugin` | `config` | `config` | Configures the React plugin for Vite |
 
 #### Configuration
 
-- **ESLint Configuration**: Includes basic linting rules for React components.
-- **TypeScript Template**: Recommended for production applications to integrate TypeScript and `typescript-eslint`.
+This setup includes ESLint rules to ensure code quality. For production applications, it's recommended to use TypeScript with type-aware lint rules enabled.
 
 #### Notes
 
-- For production applications, it's recommended to use TypeScript with type-aware lint rules enabled.
-- Check the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for integrating TypeScript and `typescript-eslint`.
+- Ensure you choose the appropriate React plugin based on your preference for Babel or SWC for Fast Refresh.
+- For TypeScript integration and enhanced linting, refer to the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts).
 
 ### frontend/components.json
 
@@ -1787,13 +1738,13 @@ This file provides a minimal setup to get React working in Vite with Hot Module 
 
 #### Module Overview
 
-This file defines configuration settings for our frontend components, including styling, icon library, and module aliases. It ensures that all components are properly imported and styled according to our project's standards.
+This file defines the configuration for our frontend components, including styling, icon libraries, and module aliases. It ensures that all components are correctly imported and styled according to our project's standards.
 
 #### Dependencies
 
 - **UI Schema**: Defines the structure and validation for our configuration file.
-- **Tailwind CSS**: Provides styling configurations.
-- **Lucide Icon Library**: Specifies the icon library used in our components.
+- **Tailwind CSS**: Provides styling configurations for our components.
+- **Lucide Icon Library**: Supplies the icons used in our components.
 
 #### Classes
 
@@ -1812,29 +1763,30 @@ This file defines configuration settings for our frontend components, including 
 | Key | Value | Description |
 | --- | --- | --- |
 | `$schema` | "https://ui.shadcn.com/schema.json" | Defines the schema for the configuration file. |
-| `style` | "new-york" | Specifies the styling theme. |
+| `style` | "new-york" | Sets the styling theme for the components. |
 | `rsc` | false | Disables resource sharing. |
-| `tsx` | false | Disables TypeScript React syntax. |
+| `tsx` | false | Disables TypeScript with JSX. |
 | `tailwind` | | Tailwind CSS configuration. |
-| `tailwind.config` | "" | Tailwind CSS configuration file path. |
-| `tailwind.css` | "src/index.css" | Path to the main Tailwind CSS file. |
+| `tailwind.config` | "" | Tailwind config file path. |
+| `tailwind.css` | "src/index.css" | Main CSS file for Tailwind. |
 | `tailwind.baseColor` | "neutral" | Base color theme for Tailwind. |
 | `tailwind.cssVariables` | true | Enables CSS variables for Tailwind. |
 | `tailwind.prefix` | "" | Prefix for Tailwind classes. |
-| `iconLibrary` | "lucide" | Specifies the icon library used. |
+| `iconLibrary` | "lucide" | Icon library used in components. |
 | `aliases` | | Module aliases for easier imports. |
 | `aliases.components` | "@/components" | Alias for the components directory. |
 | `aliases.utils` | "@/lib/utils" | Alias for the utils directory. |
 | `aliases.ui` | "@/components/ui" | Alias for the UI components directory. |
 | `aliases.lib` | "@/lib" | Alias for the lib directory. |
 | `aliases.hooks` | "@/hooks" | Alias for the hooks directory. |
-| `registries` | {} | Empty registries object. |
+| `registries` | {} | Component registries (currently empty). |
 
 #### Notes
 
-- This configuration file is crucial for maintaining consistency across our frontend components.
-- Ensure that all paths and aliases are correctly set to avoid import errors.
-- Tailwind CSS configurations should be reviewed regularly to keep up with any updates or changes in styling requirements.
+- Ensure that all paths in the `aliases` section are correct and reflect the actual directory structure.
+- The `tailwind` configuration can be expanded or modified to fit specific styling needs.
+- The `iconLibrary` can be changed if a different icon set is required.
+- This file is crucial for maintaining consistency across all components in the project.
 
 ### frontend/eslint.config.js
 
@@ -1842,23 +1794,29 @@ This file defines configuration settings for our frontend components, including 
 
 # frontend/eslint.config.js
 
-This file configures ESLint for the JavaScript and JSX files in the frontend directory. It sets up the rules and extends configurations from various plugins to ensure code quality and consistency.
+This file configures ESLint for the frontend codebase, setting up rules and extensions to ensure consistent code quality and style.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `@eslint/js` | Provides ESLint configuration for JavaScript using the JS parser. |
+| `@eslint/js` | Provides recommended ESLint configuration for JavaScript. |
 | `globals` | Provides global variable definitions for various environments. |
-| `eslint-plugin-react-hooks` | Adds rules for React Hooks. |
-| `eslint-plugin-react-refresh` | Adds rules for using React Refresh. |
-| `eslint/config` | Provides utilities to define and combine ESLint configurations. |
+| `eslint-plugin-react-hooks` | Adds rules specific to React hooks. |
+| `eslint-plugin-react-refresh` | Adds rules specific to React Refresh. |
+| `eslint/config` | Provides utilities to define ESLint configurations. |
+
+#### Classes
+
+| Class | Purpose | Key Methods |
+| --- | --- | --- |
+| N/A | This file does not define any classes. | N/A |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `defineConfig` | `configs` | ESLint configuration object | Combines provided configurations into a single ESLint config. |
+| `defineConfig` | `configArray` | `ESLintConfig` | Combines multiple ESLint configurations into a single config. |
 
 #### Configuration
 
@@ -1866,15 +1824,14 @@ This file configures ESLint for the JavaScript and JSX files in the frontend dir
 | --- | --- | --- |
 | `globalIgnores` | `['dist']` | Ignores files in the `dist` directory. |
 | `files` | `['**/*.{js,jsx}']` | Applies rules to all `.js` and `.jsx` files. |
-| `extends` | `[js.configs.recommended, reactHooks.configs['recommended-latest'], reactRefresh.configs.vite]` | Extends recommended configurations from JS, React Hooks, and React Refresh. |
-| `languageOptions` | `{ ecmaVersion: 2020, globals: globals.browser, parserOptions: { ecmaVersion: 'latest', ecmaFeatures: { jsx: true }, sourceType:'module' } }` | Sets ECMAScript version, global variables, and parser options. |
-| `rules` | `{ 'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }] }` | Enforces no unused variables, ignoring constants. |
+| `extends` | `[js.configs.recommended, reactHooks.configs['recommended-latest'], reactRefresh.configs.vite]` | Extends recommended configurations from ESLint JS, React Hooks, and React Refresh. |
+| `languageOptions` | `{ ecmaVersion: 2020, globals: globals.browser, parserOptions: { ecmaVersion: 'latest', ecmaFeatures: { jsx: true }, sourceType:'module' } }` | Configures ECMAScript version, global variables, and parser options for JSX. |
+| `rules` | `{ 'no-unused-vars': ['error', { varsIgnorePattern: '^[A-Z_]' }] }` | Enforces no unused variables, ignoring constants and utility functions. |
 
 #### Notes
 
-- The `no-unused-vars` rule is configured to ignore variables that start with an uppercase letter or underscore, which are often used as constants.
-- The configuration ignores the `dist` directory to avoid linting compiled code.
-- This setup ensures that the code adheres to modern JavaScript standards and React best practices.
+- The `no-unused-vars` rule is configured to ignore variables that start with an uppercase letter or underscore, which are typically constants or utility functions.
+- Ensure that `.eslintignore` does not conflict with `globalIgnores` to avoid unintended linting of ignored files.
 
 ### frontend/index.html
 
@@ -1882,13 +1839,11 @@ This file configures ESLint for the JavaScript and JSX files in the frontend dir
 
 # frontend/index.html
 
-This file serves as the entry point for the frontend application. It sets up the basic HTML structure and includes the main JavaScript module that bootstraps the application.
+This file serves as the entry point for the frontend of the CampusMitra application. It sets up the basic HTML structure and includes the main JavaScript module that bootstraps the application.
 
 #### Dependencies
 
-| Import | Purpose |
-| --- | --- |
-| `/src/main.jsx` | Entry point for the React application. |
+- **`/src/main.jsx`**: The main JavaScript entry point for the React application.
 
 #### Classes
 
@@ -1904,11 +1859,9 @@ This file serves as the entry point for the frontend application. It sets up the
 
 #### Configuration
 
-| Configuration | Purpose |
-| --- | --- |
-| `<meta charset="UTF-8" />` | Sets the character encoding for the HTML document. |
-| `<meta name="viewport" content="width=device-width, initial-scale=1.0" />` | Ensures the page is responsive and renders correctly on different devices. |
-| `<link rel="icon" type="image/svg+xml" href="./src/assets/Campusmitra_logo.svg" />` | Links the application icon to the SVG file. |
+- **`<meta charset="UTF-8">`**: Sets the character encoding to UTF-8.
+- **`<meta name="viewport" content="width=device-width, initial-scale=1.0">`**: Ensures the page is responsive on all devices.
+- **`<link rel="icon" type="image/svg+xml" href="./src/assets/Campusmitra_logo.svg">`**: Sets the application icon.
 
 #### Notes
 
@@ -1923,38 +1876,27 @@ This file serves as the entry point for the frontend application. It sets up the
 
 #### Module Overview
 
-This file defines the module resolution settings for the JavaScript compiler. It sets up aliases to simplify import paths within the project, making it easier to reference files within the `src` directory.
+This file configures the JavaScript compiler options for the frontend project. It sets up base paths and aliases to streamline module resolution and simplify import statements.
 
 #### Dependencies
 
-No direct dependencies are listed here, but it relies on the compiler's configuration to resolve module paths.
+This file doesn't directly import any modules but relies on TypeScript compiler options.
 
 #### Configuration
 
 | Setting | Purpose |
-|---------|---------|
+| --- | --- |
 | `baseUrl` | Sets the base directory for resolving non-absolute module names. |
-| `paths` | Maps aliases to directories for easier imports. |
+| `paths` | Maps aliases to directories, allowing for cleaner import paths. |
 
-### Example
-
-```json
-{
-  "compilerOptions": {
-    "baseUrl": ".",
-    "paths": {
-      "@/*": ["./src/*"]
-    }
-  }
-}
-```
-
-This configuration allows you to use `import` statements like `import component from '@/components/component'` instead of `import component from './src/components/component'`.
+| Alias | Target |
+| --- | --- |
+| `@/*` | `./src/*` |
 
 #### Notes
 
-- Ensure that the `baseUrl` and `paths` settings align with your project's directory structure.
-- Changes to this file require restarting the development server to take effect.
+- The `@/*` alias simplifies imports by allowing developers to use `@` as a shortcut for the `src` directory.
+- Ensure that the `tsconfig.json` file includes this `jsconfig.json` to inherit these settings.
 
 ### frontend/package.json
 
@@ -1962,54 +1904,48 @@ This configuration allows you to use `import` statements like `import component 
 
 # frontend/package.json
 
-This file defines the dependencies and scripts for the frontend module of our project. It ensures that all necessary packages are installed and provides commands to run development, build, lint, and preview tasks.
+This file defines the project's dependencies, scripts, and development environment for the frontend. It's the heart of managing how our frontend application is built, tested, and deployed.
 
 #### Dependencies
 
 | Package | Purpose |
 | --- | --- |
-| `@radix-ui/react-avatar` | UI component for displaying avatars. |
-| `@radix-ui/react-dialog` | UI component for dialogs. |
-| `@radix-ui/react-scroll-area` | UI component for scroll areas. |
-| `@radix-ui/react-slot` | Utility for slotting components. |
-| `@tailwindcss/typography` | Tailwind CSS plugin for typography. |
-| `@tailwindcss/vite` | Tailwind CSS integration for Vite. |
-| `axios` | Promise-based HTTP client for making API requests. |
-| `class-variance-authority` | Utility for managing component variants. |
-| `clsx` | Function for composing class names. |
-| `lucide-react` | Library for React icons. |
-| `react` | Core library for building user interfaces. |
-| `react-dom` | DOM-specific methods for React. |
-| `react-markdown` | Component for rendering Markdown in React. |
-| `react-router-dom` | Routing for single-page applications using React. |
-| `rehype-raw` | Rehype plugin to keep raw HTML. |
-| `remark-gfm` | Remark plugin to support GitHub Flavored Markdown. |
-| `sweetalert2` | Modern JavaScript library for beautiful alerts and confirmation dialogs. |
-| `tailwind-merge` | Utility for merging Tailwind CSS classes. |
-| `tailwindcss` | Utility-first CSS framework. |
+| @radix-ui/react-avatar | UI component for displaying avatars. |
+| @radix-ui/react-dialog | UI component for dialogs. |
+| @radix-ui/react-scroll-area | UI component for scroll areas. |
+| @radix-ui/react-slot | Utility for slotting components. |
+| @tailwindcss/typography | Tailwind CSS plugin for typography. |
+| @tailwindcss/vite | Tailwind CSS integration with Vite. |
+| axios | HTTP client for making API requests. |
+| class-variance-authority | Utility for managing component variants. |
+| clsx | Utility for creating className strings. |
+| lucide-react | Library for React icons. |
+| react | React library for building UI components. |
+| react-dom | Library for rendering React to the DOM. |
+| react-markdown | Library for rendering Markdown in React. |
+| react-router-dom | Library for routing in React applications. |
+| rehype-raw | Plugin for Rehype to keep raw HTML. |
+| remark-gfm | Plugin for Markdown to GitHub Flavored Markdown. |
+| sweetalert2 | Library for beautiful alerts. |
+| tailwind-merge | Utility for merging Tailwind classes. |
+| tailwindcss | Utility-first CSS framework. |
 
-#### DevDependencies
+#### Scripts
 
-| Package | Purpose |
+| Script | Purpose |
 | --- | --- |
-| `@eslint/js` | JavaScript linting. |
-| `@types/react` | TypeScript definitions for React. |
-| `@types/react-dom` | TypeScript definitions for ReactDOM. |
-| `@vitejs/plugin-react` | Vite plugin for React. |
-| `eslint` | JavaScript linter. |
-| `eslint-plugin-react-hooks` | ESLint plugin for React hooks. |
-| `eslint-plugin-react-refresh` | ESLint plugin for React Refresh. |
-| `globals` | Global type definitions. |
-| `tw-animate-css` | Tailwind CSS plugin for animations. |
-| `vite` | Fast module bundler. |
+| `dev` | Starts the development server using Vite. |
+| `build` | Builds the project for production using Vite. |
+| `lint` | Runs ESLint to check for linting errors. |
+| `preview` | Previews the production build. |
 
 #### Notes
 
-- Ensure that all dependencies are up-to-date to avoid compatibility issues.
-- The `dev` script runs the development server using Vite.
-- The `build` script compiles the project for production.
-- The `lint` script checks for linting errors in the codebase.
-- The `preview` script serves the production build for previewing.
+- Ensure `vite` and `eslint` are installed globally if you encounter any issues running the scripts.
+- The `dev` script is the primary way to start the development server.
+- Linting is crucial for maintaining code quality; run `npm run lint` regularly.
+- The `build` script prepares the application for production deployment.
+- The `preview` script allows you to see how the production build will look in a browser.
 
 ### frontend/vite.config.js
 
@@ -2017,15 +1953,13 @@ This file defines the dependencies and scripts for the frontend module of our pr
 
 # frontend/vite.config.js
 
-#### Module Overview
-
-This file configures the Vite build tool for our frontend project. It sets up plugins, aliases for easier imports, and server settings to support development.
+This file configures the Vite build tool for our project. It sets up plugins, resolves module paths, and defines server and preview settings.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `defineConfig` | Function from `vite` to define the configuration object. |
+| `defineConfig` | Function from `vite` to define the Vite configuration. |
 | `react` | Plugin to integrate React with Vite. |
 | `tailwindcss` | Plugin to integrate Tailwind CSS with Vite. |
 | `path` | Node module to handle and transform file paths. |
@@ -2034,21 +1968,22 @@ This file configures the Vite build tool for our frontend project. It sets up pl
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `defineConfig` | None | Configuration object | Main function to export the Vite configuration. |
+| `defineConfig` | None | Vite Config Object | Main function to define the Vite configuration. |
 
 #### Configuration
 
-| Key | Value | Purpose |
+| Setting | Value | Description |
 | --- | --- | --- |
-| `plugins` | `[react(), tailwindcss()]` | Adds React and Tailwind CSS plugins. |
-| `resolve.alias` | `{ "@": path.resolve(__dirname, "./src") }` | Maps `@` to the `src` directory for easier imports. |
-| `server.historyApiFallback` | `true` | Enables HTML5 history API fallback for client-side routing. |
-| `preview.historyApiFallback` | `true` | Enables HTML5 history API fallback for preview server. |
+| `plugins` | `[react(), tailwindcss()]` | Array of plugins to use in the build process. |
+| `resolve.alias` | `{"@": path.resolve(__dirname, "./src")}` | Maps `@` to the `src` directory for easier imports. |
+| `server.historyApiFallback` | `true` | Enables HTML5 history fallback for client-side routing. |
+| `preview.historyApiFallback` | `true` | Enables HTML5 history fallback for preview server. |
 
 #### Notes
 
-- Ensure that the `src` directory path is correctly resolved to avoid import errors.
-- The `historyApiFallback` setting is crucial for proper routing behavior in development and preview environments.
+- The `resolve.alias` feature simplifies imports from the `src` directory.
+- `historyApiFallback` is crucial for single-page application routing without server errors.
+- Ensure that the `@` alias points to the correct `src` directory path in your local setup.
 
 ### frontend/src/App.css
 
@@ -2056,60 +1991,56 @@ This file configures the Vite build tool for our frontend project. It sets up pl
 
 #### Overview
 
-# frontend/src/App.jsx
+# `frontend/src/App.jsx` Module Overview
 
-#### Module Overview
-
-This file defines the main application component for our React-based frontend. It sets up the routing for the application, checks for user authentication status, and conditionally renders different views based on whether the user is logged in.
+This file serves as the entry point for the React application, managing the overall layout and routing. It checks user authentication status and conditionally renders different views based on whether the user is logged in.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `React`, `{ useState, useEffect }` | Core React library and hooks for state and lifecycle management. |
+| `React` | Core React library for building UI components. |
+| `useState`, `useEffect` | React hooks for managing state and side effects. |
 | `Routes`, `Route`, `Navigate` | Components from `react-router-dom` for defining and navigating routes. |
-| `ChatbotView`, `LoginPage`, `AdminDashboard` | Component files for different views in the application. |
-| `ProtectedRoute` | A custom component to protect certain routes based on authentication. |
+| `ChatbotView`, `LoginPage`, `AdminDashboard` | Component files for different views in the app. |
+| `ProtectedRoute` | A custom component to protect certain routes. |
 | `./App.css` | CSS module for styling the application. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `App` | None | JSX | The main component that sets up the app's routing and authentication state. |
+| `App` | None | JSX | The main function component that renders the app layout and routes. |
 
 #### Notes
 
-- The `isAuthenticated` state is used to track whether the user is logged in. It's initially set to `false` and updated based on the presence of an `authToken` in `localStorage`.
-- Two `useEffect` hooks are used to check the authentication status on app load and to listen for changes in `localStorage` (e.g., when the user logs in or out from another tab).
-- The `ProtectedRoute` component is used to wrap the `AdminDashboard` route, ensuring it's only accessible to authenticated users.
-- The `Navigate` component is used for the catch-all route, redirecting any undefined routes to the home page.
+- The `isAuthenticated` state is initialized based on the presence of an `authToken` in `localStorage`.
+- The `storage` event listener updates the authentication status if the `authToken` changes in other tabs.
+- Protected routes are wrapped with the `ProtectedRoute` component to enforce authentication checks.
 
 ### frontend/src/index.css
 
 #### Overview
 
-# `frontend/src/index.css`
+# Module Overview
 
-#### Module Overview
-
-This file contains global CSS styles, including animations, theme variables, and base layer styles. It leverages Tailwind CSS for utility-first styling and includes custom animations and theme configurations.
+This file contains global CSS styles, animations, and theme variables for the application. It leverages Tailwind CSS for utility classes and includes custom animations and theme configurations.
 
 #### Dependencies
 
-- `tailwindcss`: Provides utility-first CSS framework.
+- `tailwindcss`: Provides utility classes and theming capabilities.
 - `tw-animate-css`: Extends Tailwind with additional animations.
-- `@tailwindcss/typography`: Enhances prose styles.
+- `@tailwindcss/typography`: Enhances prose styling.
 
 #### Animations
 
-| Animation | Description |
+| Animation Name | Description |
 | --- | --- |
-| `fab-to-chat` | Scales and moves FAB to chat widget. |
+| `fab-to-chat` | Scales and translates FAB to chat widget. |
 | `chat-to-fab` | Reverses `fab-to-chat` animation. |
 | `fade-in` | Fades element in. |
-| `bounce-in` | Bounces element in with scale. |
-| `slide-up` | Slides element up. |
+| `bounce-in` | Bounces element in with scaling. |
+| `slide-up` | Slides element up while fading in. |
 | `pulse-glow` | Creates a pulsing glow effect. |
 
 #### Classes
@@ -2124,7 +2055,7 @@ This file contains global CSS styles, including animations, theme variables, and
 | `.animate-bounce-in` | Applies `bounce-in` animation. |
 | `.message-enter` | Applies `fade-in` animation for chat messages. |
 | `.chat-widget-container` | Optimizes performance for chat widget. |
-| `.transition-smooth` | Adds smooth transitions to interactive elements. |
+| `.transition-smooth` | Applies smooth transition to interactive elements. |
 
 #### Theme Variables
 
@@ -2134,27 +2065,16 @@ This file contains global CSS styles, including animations, theme variables, and
 | `--foreground` | `oklch(0.145 0 0)` | `oklch(0.985 0 0)` |
 | `--primary` | `oklch(0.205 0 0)` | `oklch(0.922 0 0)` |
 | `--primary-foreground` | `oklch(0.985 0 0)` | `oklch(0.205 0 0)` |
-| `--sidebar` | `oklch(0.985 0 0)` | `oklch(0.205 0 0)` |
-| `--sidebar-foreground` | `oklch(0.145 0 0)` | `oklch(0.985 0 0)` |
-
-#### Base Layer
-
-```css
-@layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
-  body {
-    @apply bg-background text-foreground;
-  }
-}
-```
+| `--destructive` | `oklch(0.577 0.245 27.325)` | `oklch(0.704 0.191 22.216)` |
+| `--border` | `oklch(0.922 0 0)` | `oklch(1 0 0 / 10%)` |
+| `--input` | `oklch(0.922 0 0)` | `oklch(1 0 0 / 15%)` |
+| `--ring` | `oklch(0.708 0 0)` | `oklch(0.556 0 0)` |
 
 #### Notes
 
 - Ensure animations are performant and do not cause jank.
-- Theme variables are used extensively throughout the application for consistent styling.
-- The `base` layer applies global styles to all elements and the `body`.
+- Theme variables are used throughout the application for consistent styling.
+- Custom animations should be tested across different devices for smoothness.
 
 ### frontend/src/main.jsx
 
@@ -2164,28 +2084,28 @@ This file contains global CSS styles, including animations, theme variables, and
 
 #### Module Overview
 
-This file initializes the React application. It sets up the root React component and integrates routing using React Router. The `StrictMode` wrapper helps identify potential problems in the application.
+This file initializes the React application and mounts the root component. It sets up the routing context using `BrowserRouter` and wraps the application in `StrictMode` for better error detection.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `StrictMode` | Enables helpful warnings in development mode. |
-| `createRoot` | Provides a way to render a React tree to a DOM node. |
-| `BrowserRouter` | A router for single-page applications using the browser's URL to keep the UI in sync. |
+| `StrictMode` | Enables helpful warnings in development. |
+| `createRoot` | A method to create a root for rendering the React application. |
+| `BrowserRouter` | Provides routing capabilities for the application. |
 | `App` | The main application component. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `createRoot(document.getElementById("root")).render` | `StrictMode`, `BrowserRouter`, `App` | None | Renders the React application with routing. |
+| `createRoot(container).render()` | `container` (DOM element), `React component` | None | Renders the React component into the specified DOM element. |
 
 #### Notes
 
-- The `StrictMode` helps catch potential problems in the codebase.
-- Ensure the `<div id="root"></div>` exists in the HTML file where this script will be injected.
-- This setup assumes the `App` component is correctly defined in `frontend/src/App.jsx`.
+- `StrictMode` may cause additional renders and warnings to help identify potential issues.
+- Ensure `index.css` is correctly set up for styling the application.
+- The `App` component is the entry point for the entire application logic and routing.
 
 ### frontend/src/api/client.js
 
@@ -2195,39 +2115,40 @@ This file initializes the React application. It sets up the root React component
 
 #### Module Overview
 
-This file sets up and exports an axios instance configured for making HTTP requests to our backend API. It includes request and response interceptors to handle authentication tokens and unauthorized access errors.
+This file creates and configures an `axios` instance for making HTTP requests to the backend API. It sets up request and response interceptors to handle authentication tokens and unauthorized access errors.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `axios` | A promise-based HTTP client for making requests to the API. |
+| `axios` | HTTP client for making API requests |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `api` | Axios instance configured for API requests. | N/A |
+| `api` | Axios instance configured with base URL, timeout, and headers | N/A |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `api.interceptors.request.use` | `config` | `config` | Adds auth token to request headers if available. |
-| `api.interceptors.response.use` | `response` | `response` or `Promise.reject(error)` | Handles API response and unauthorized errors. |
+| `localStorage.getItem('authToken')` | `authToken` | `string` | Retrieves the auth token from local storage |
+| `localStorage.removeItem('authToken')` | `authToken` | `void` | Removes the auth token from local storage |
+| `window.location.href = '/login'` | `path` | `void` | Redirects to the login page |
 
 #### Configuration
 
-| Constant | Value | Description |
-| --- | --- | --- |
-| `baseURL` | `import.meta.env.VITE_API_URL` or `http://localhost:3001/api` | Base URL for API requests. Defaults to local development URL if environment variable is not set. |
-| `timeout` | `10000` | Request timeout in milliseconds. |
+| Constant | Purpose |
+| --- | --- |
+| `import.meta.env.VITE_API_URL` | Environment variable for API URL |
 
 #### Notes
 
-- The request interceptor adds an Authorization header with the Bearer token if it exists in local storage.
-- The response interceptor handles 401 errors by clearing the auth token and redirecting the user to the login page.
-- Ensure environment variables are correctly set for production deployments to avoid hardcoded URLs.
+- The `api` instance uses a default `baseURL` from an environment variable or a fallback URL.
+- The request interceptor adds an authorization header if an auth token is present.
+- The response interceptor handles 401 errors by clearing tokens and redirecting to the login page.
+- Ensure environment variables are correctly set for production deployments.
 
 ### frontend/src/api/index.js
 
@@ -2237,36 +2158,36 @@ This file sets up and exports an axios instance configured for making HTTP reque
 
 #### Module Overview
 
-This file exports a collection of API functions that interact with the backend services for authentication, document management, and chat functionalities. It provides a clean interface for the frontend to communicate with the backend without dealing with the complexities of HTTP requests directly.
+This file exports a collection of API functions for handling authentication, document management, and chat interactions. It provides a clean interface for interacting with the backend services.
 
 #### Dependencies
 
-| Import | Description |
-| :--- | :--- |
-| `api` | A custom HTTP client for making requests to the backend. |
+| Import | Purpose |
+| ------ | ------- |
+| `api` | A configured instance of an HTTP client used to make requests to the backend. |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
-| :--- | :--- | :--- | :--- |
-| `authAPI.login` | `credentials` | `Promise<Object>` | Authenticates an admin by logging in with provided credentials. |
-| `documentAPI.getAnnouncements` | None | `Promise<Object>` | Fetches all announcements/documents from the backend. |
-| `documentAPI.uploadDocument` | `formData` | `Promise<Object>` | Uploads a new document to the backend. |
-| `documentAPI.viewDocument` | `id` | `Promise<Object>` | Retrieves a document for viewing. |
-| `documentAPI.deleteDocument` | `id` | `Promise<Object>` | Deletes a document by its ID. |
-| `documentAPI.getDocumentStatus` | `id` | `Promise<Object>` | Retrieves the status of a document by its ID. |
-| `chatAPI.askQuestion` | `question`, `conversationId` (optional) | `Promise<Object>` | Asks a question with conversation tracking. |
-| `chatAPI.askAboutDocument` | `question`, `documentId`, `conversationId` (optional) | `Promise<Object>` | Asks a question about a specific document. |
-| `chatAPI.getConversations` | `page` (optional), `limit` (optional) | `Promise<Object>` | Retrieves all conversations (admin only). |
-| `chatAPI.getConversation` | `id` | `Promise<Object>` | Retrieves a specific conversation (admin only). |
-| `chatAPI.deleteConversation` | `id` | `Promise<Object>` | Deletes a conversation by its ID (admin only). |
+| -------- | ---------- | ------- | ----------- |
+| `authAPI.login` | `credentials` | `Promise<Object>` | Authenticates an admin user and returns the response data. |
+| `documentAPI.getAnnouncements` | None | `Promise<Object>` | Fetches all announcements/documents and returns the response data. |
+| `documentAPI.uploadDocument` | `formData` | `Promise<Object>` | Uploads a new document and returns the response data. |
+| `documentAPI.viewDocument` | `id` | `Promise<Object>` | Fetches a document for viewing and returns the response. |
+| `documentAPI.deleteDocument` | `id` | `Promise<Object>` | Deletes a document and returns the response data. |
+| `documentAPI.getDocumentStatus` | `id` | `Promise<Object>` | Retrieves the status of a document and returns the response data. |
+| `chatAPI.askQuestion` | `question`, `conversationId` | `Promise<Object>` | Asks a question with conversation tracking and returns the response data. |
+| `chatAPI.askAboutDocument` | `question`, `documentId`, `conversationId` | `Promise<Object>` | Asks a question about a specific document and returns the response data. |
+| `chatAPI.getConversations` | `page`, `limit` | `Promise<Object>` | Retrieves all conversations and returns the response data. |
+| `chatAPI.getConversation` | `id` | `Promise<Object>` | Fetches a specific conversation and returns the response data. |
+| `chatAPI.deleteConversation` | `id` | `Promise<Object>` | Deletes a conversation and returns the response data. |
 
 #### Notes
 
-- All API functions are asynchronous and return a promise.
-- Error handling is implemented in each function, throwing an error with a meaningful message if the request fails.
-- Session IDs are generated and stored in the session storage for chat functionalities to maintain conversation continuity.
-- Ensure the backend routes match the endpoints used in these functions.
+- All API functions are asynchronous and return promises.
+- Error handling is consistent across all functions, throwing the error response data or a default error message.
+- Session IDs are generated and stored in `sessionStorage` for chat-related API calls.
+- Ensure the backend API routes match the endpoints used in this file.
 
 ### frontend/src/components/DocumentList.jsx
 
@@ -2278,32 +2199,32 @@ This file exports a collection of API functions that interact with the backend s
 
 #### Module Overview
 
-This file defines a React component `ProtectedRoute` that ensures only authenticated users can access certain routes in the application. It checks for the presence of an `authToken` and a `user` in `localStorage` and redirects unauthenticated users to the login page.
+This file defines a `ProtectedRoute` component that ensures only authenticated users can access certain parts of the application. It checks for the presence of an authentication token and user information in `localStorage`. If the user is not authenticated, it redirects them to the login page.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `React` | Core library for building user interfaces. |
-| `Navigate, useLocation` | From `react-router-dom` to handle navigation and access to the current location. |
+| `React` | Core library for building UI components. |
+| `Navigate, useLocation` | From `react-router-dom`, used for navigation and obtaining current location. |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `ProtectedRoute` | A route component that protects certain routes by checking for authentication. | None |
+| `ProtectedRoute` | Component to protect routes and redirect unauthenticated users. | None |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `useLocation` | None | Current location object | Provides access to the current URL location. |
+| `ProtectedRoute` | `{ children }` | `JSX` or `null` | Renders children if authenticated, otherwise redirects to login. |
 
 #### Notes
 
-- The component uses `localStorage` to check for the presence of an `authToken` and `user`.
-- If the user is not authenticated, it redirects to the `/login` page with the current location as state.
-- This component should be wrapped in a `Router` to work correctly with `Navigate`.
+- The component relies on `localStorage` for storing and checking authentication state.
+- If `authToken` or `user` are not present in `localStorage`, the user is redirected to the login page.
+- The `Navigate` component from `react-router-dom` is used to handle redirections.
 
 ### frontend/src/components/index.js
 
@@ -2313,42 +2234,36 @@ This file defines a React component `ProtectedRoute` that ensures only authentic
 
 #### Module Overview
 
-This file serves as the entry point for our component library, aggregating and exporting all the individual components used in the frontend. It helps in maintaining a clean and organized codebase by centralizing imports.
+This file serves as the entry point for our component exports in the frontend. It consolidates imports from various subdirectories, making it easier to import components from a single location.
 
 #### Dependencies
 
-No direct dependencies are imported in this file. It relies on components located in various directories.
+No direct dependencies are imported in this file. It relies on components from various directories.
 
 #### Classes
 
-| Class | Purpose | Key Methods |
-| --- | --- | --- |
-| N/A | N/A | N/A |
-
-#### Functions
-
-| Function | Parameters | Returns | Description |
-| --- | --- | --- | --- |
-| `export { default as MessageInput }` | N/A | `MessageInput` component | Part of chat component suite, used for user input in chat. |
-| `export { default as MessageBubble }` | N/A | `MessageBubble` component | Displays individual chat messages. |
-| `export { default as MessageList }` | N/A | `MessageList` component | Lists all chat messages. |
-| `export { default as ChatHeader }` | N/A | `ChatHeader` component | Header component for the chat interface. |
-| `export { default as ChatArea }` | N/A | `ChatArea` component | Main area for chat interactions. |
-| `export { default as ChatWidget }` | N/A | `ChatWidget` component | Widget component for chat functionalities. |
-| `export { default as ChatTranscripts }` | N/A | `ChatTranscripts` component | Displays chat transcripts. |
-| `export { default as ChatLayout }` | N/A | `ChatLayout` component | Layout component for chat interface. |
-| `export { default as DesktopSidebar }` | N/A | `DesktopSidebar` component | Sidebar component for desktop view. |
-| `export { default as MobileSidebar }` | N/A | `MobileSidebar` component | Sidebar component for mobile view. |
-| `export { default as DocumentUploader }` | N/A | `DocumentUploader` component | Component for uploading documents. |
-| `export { default as DocumentList }` | N/A | `DocumentList` component | Lists documents. |
-| `export { default as DocumentManager }` | N/A | `DocumentManager` component | Manages document functionalities. |
-| `export { default as DocumentViewer }` | N/A | `DocumentViewer` component | Viewer component for documents. |
+| Class           | Purpose                                              | Key Methods |
+|-----------------|------------------------------------------------------|------------|
+| `MessageInput`  | Input component for chat messages                    | N/A        |
+| `MessageBubble` | Displays individual chat messages                    | N/A        |
+| `MessageList`   | Container for a list of chat messages               | N/A        |
+| `ChatHeader`    | Header component for the chat area                    | N/A        |
+| `ChatArea`      | Main area for chat interactions                      | N/A        |
+| `ChatWidget`    | Widget component for chat functionality              | N/A        |
+| `ChatTranscripts` | Displays chat transcripts                           | N/A        |
+| `ChatLayout`    | Layout component for chat interface                   | N/A        |
+| `DesktopSidebar`| Sidebar component for desktop view                    | N/A        |
+| `MobileSidebar` | Sidebar component for mobile view                     | N/A        |
+| `DocumentUploader` | Component for uploading documents                    | N/A        |
+| `DocumentList`  | Displays a list of documents                         | N/A        |
+| `DocumentManager` | Manages document operations                         | N/A        |
+| `DocumentViewer` | Viewer component for documents                      | N/A        |
 
 #### Notes
 
-- This file exports all components from their respective directories, making it easier to import them in other parts of the application.
-- Each component is exported with a default import, simplifying usage in other modules.
-- Ensure that all components are correctly implemented and tested before relying on them in the application.
+- This file exports all components from their respective directories, making it a single entry point for all frontend components.
+- Ensure that all components are correctly imported and exported from their respective directories to avoid any import errors.
+- This structure helps in maintaining a clean and organized codebase, making it easier to navigate and manage components.
 
 ### frontend/src/components/chat/ChatArea.jsx
 
@@ -2358,33 +2273,33 @@ No direct dependencies are imported in this file. It relies on components locate
 
 #### Module Overview
 
-This file defines the `ChatArea` component, which is a container for the chat interface. It integrates `ChatHeader`, `MessageList`, and `MessageInput` components to display chat messages and provide an input area for sending new messages.
+This file defines the `ChatArea` component, which is a container for the chat interface. It integrates `ChatHeader`, `MessageList`, and `MessageInput` components to display chat messages and provide an input area for new messages.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `ChatHeader` | A component for the chat header, which can vary based on mobile or desktop view. |
-| `MessageList` | A component to display a list of chat messages. |
-| `MessageInput` | A component for the input area where users can type and send messages. |
+| `ChatHeader` | Component for the chat header, includes toggle for mobile menu. |
+| `MessageList` | Component to display a list of chat messages. |
+| `MessageInput` | Component for the chat input box and send button. |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `ChatArea` | Main container for the chat interface. | None |
+| `ChatArea` | Main container for chat interface | None |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `ChatArea` | `messages`, `inputValue`, `setInputValue`, `onSendMessage`, `onMobileMenuToggle`, `onSuggestionClick` | None | Renders the chat area with message list, header, and input field. |
+| `ChatArea` | `messages`, `inputValue`, `setInputValue`, `onSendMessage`, `onMobileMenuToggle`, `onSuggestionClick` | None | Renders the chat area with message list, input, and header components. |
 
 #### Notes
 
-- The `ChatHeader` component is rendered twice with different `isMobile` props to handle both mobile and desktop views.
-- The `MessageInput` component handles user input and triggers `onSendMessage` when a new message is sent.
-- Ensure that the `onMobileMenuToggle` function is passed correctly if mobile menu functionality is required.
+- The `ChatHeader` component is rendered twice with different `isMobile` props, which might seem redundant but is intentional for specific layout requirements.
+- The `onSendMessage` function is called when a new message is submitted via the `MessageInput`.
+- The `onSuggestionClick` function is passed to `MessageList` to handle click events on message suggestions.
 
 ### frontend/src/components/chat/ChatHeader.jsx
 
@@ -2400,7 +2315,7 @@ This file defines the `ChatHeader` component, which renders the header for the c
 
 | Import | Source | Purpose |
 | --- | --- | --- |
-| `Avatar`, `AvatarFallback` | `@/components/ui/avatar` | UI components for displaying avatars and fallback text. |
+| `Avatar`, `AvatarFallback` | `@/components/ui/avatar` | Components for rendering user avatars |
 
 #### Classes
 
@@ -2412,7 +2327,7 @@ This file defines the `ChatHeader` component, which renders the header for the c
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `ChatHeader` | `isMobile` (boolean) | JSX element | Renders different layouts for mobile and desktop views. |
+| `ChatHeader` | `isMobile` (boolean, default: `false`) | JSX element | Renders different layouts for mobile and desktop views |
 
 #### Configuration or Constants
 
@@ -2420,10 +2335,9 @@ None
 
 #### Notes
 
-- The `ChatHeader` component conditionally renders different layouts based on the `isMobile` prop.
-- On mobile, the header is compact and only shows a minimal avatar and the name "Sarathi".
-- On larger screens, the header provides more details, including a subtitle "Your Campus Guide".
-- The `Avatar` component is used to display an avatar with a fallback text character.
+- The `ChatHeader` component uses conditional rendering to display different layouts based on the `isMobile` prop.
+- The mobile layout is hidden on larger screens (`lg:hidden`) and vice versa (`hidden lg:block`).
+- The avatar and text are static for this example, but in a real application, these would likely come from props or context.
 
 ### frontend/src/components/chat/ChatTranscripts.jsx
 
@@ -2433,42 +2347,41 @@ None
 
 #### Module Overview
 
-Displays and manages chat conversations. Allows searching, selecting, viewing, and deleting conversations.
+Displays and manages chat transcripts, allowing users to view, search, and delete conversations.
 
 #### Dependencies
 
-- `React`, `useState`, `useEffect` from "react": Core React functionality.
-- `MessageSquare`, `Trash2`, `Eye`, `User`, `Bot`, `Clock`, `Search` from "lucide-react": Icons used in UI.
-- `chatAPI` from "../../api/index.js": API client for chat-related operations.
-- `Button`, `Input`, `Card`, `CardContent`, `CardDescription`, `CardHeader`, `CardTitle`, `ScrollArea`, `Badge` from "../ui/": UI components.
-- `showSuccessToast`, `showErrorToast`, `showConfirmDialog` from "../../utils/toast.js": Utility functions for displaying toasts and dialogs.
+- `React`, `useState`, `useEffect`: Core React functionality for state and lifecycle management.
+- `lucide-react` icons: Visual elements for UI interactions.
+- `chatAPI`: API client for fetching and manipulating chat data.
+- `Button`, `Input`, `Card`, `ScrollArea`, `Badge`: UI components for layout and interaction.
+- `showSuccessToast`, `showErrorToast`, `showConfirmDialog`: Utility functions for user feedback.
 
 #### Functions
 
-| Function                 | Parameters             | Returns | Description                                                                                       |
-|--------------------------|------------------------|---------|---------------------------------------------------------------------------------------------------|
-| `ChatTranscripts`        | None                   | JSX     | Main component rendering chat transcripts and conversation details.                               |
-| `fetchConversations`     | `page` (optional)      | Promise | Fetches conversations from the API, updates state with conversations and pagination info.          |
-| `fetchConversationDetail`| `id`                   | Promise | Fetches details of a specific conversation from the API, updates selected conversation state.     |
-| `handleDelete`           | `id`, `event` (optional)| Promise | Deletes a conversation, shows confirmation dialog, updates UI on success or failure.               |
-| `handleConversationClick`| `conv`                 | None    | Handles click on a conversation, fetches details if a new conversation is selected, unselects if clicked again. |
-| `formatDateTime`         | `dateString`           | String  | Formats a date string into a locale-specific date-time string.                                    |
-| `formatDuration`         | `start`, `end`         | String  | Calculates and formats the duration between two date strings.                                     |
+| Function                  | Parameters                  | Returns | Description                                                                                       |
+|---------------------------|-----------------------------|---------|---------------------------------------------------------------------------------------------------|
+| `ChatTranscripts`         | None                        | JSX     | Main component rendering chat transcripts and details.                                            |
+| `fetchConversations`      | `page` (optional, default 1)| Promise | Fetches conversations from the API, updates state with results.                                   |
+| `fetchConversationDetail`| `id`                        | Promise | Fetches details for a specific conversation, updates selected conversation state.                 |
+| `handleDelete`            | `id`, `event`               | Promise | Deletes a conversation if confirmed, updates UI and conversation list.                            |
+| `handleConversationClick`| `conv`                      | None    | Handles click events on conversations, fetches details or unselects the conversation.             |
+| `formatDateTime`          | `dateString`                | String  | Formats a date string into a locale-specific date-time string.                                   |
+| `formatDuration`          | `start`, `end`              | String  | Calculates and formats the duration between two date strings.                                     |
 
 #### Notes
 
-- `handleDelete` prevents conversation selection when the delete button is clicked by calling `event.stopPropagation()`.
-- `handleConversationClick` unselects a conversation if it's clicked again.
-- `filteredConversations` is a computed property that filters conversations based on the search term.
-- Pagination controls are fixed at the bottom of the conversation list and are disabled when there are no previous or next pages available.
+- `handleDelete` prevents conversation selection when deleting by stopping event propagation.
+- Conversations are filtered client-side based on the `searchTerm`.
+- Pagination is managed via `currentPage` state and API response pagination data.
+- Selected conversation details are fetched and displayed in the right column.
+- Utility functions for toasts and dialogs are used for user feedback on actions.
 
 ### frontend/src/components/chat/MessageBubble.jsx
 
 #### Overview
 
 # MessageBubble.jsx
-
-#### Module Overview
 
 This file defines the `MessageBubble` component, which renders individual chat messages in the chat interface. It handles both user and bot messages, applying different styles and additional information for bot messages.
 
@@ -2477,9 +2390,9 @@ This file defines the `MessageBubble` component, which renders individual chat m
 | Import | Purpose |
 | --- | --- |
 | `React` | Core React library for building UI components. |
-| `ReactMarkdown` | Library for rendering markdown in React components. |
+| `ReactMarkdown` | Library for rendering markdown content in React. |
 | `remarkGfm` | Plugin for `ReactMarkdown` to support GitHub Flavored Markdown. |
-| `{ Badge }` | UI component for displaying badges. |
+| `{ Badge }` | Custom badge component for displaying labels. |
 | `{ FileText }` | Icon component for file text. |
 | `SourceSuggestions` | Component for displaying source suggestions for bot messages. |
 
@@ -2487,14 +2400,15 @@ This file defines the `MessageBubble` component, which renders individual chat m
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `formatTimestamp` | `timestamp` | `string` | Formats a timestamp into a readable time string. |
+| `formatTimestamp` | `timestamp` (string) | string | Formats a timestamp into a readable time string. |
 
 #### Notes
 
-- The `MessageBubble` component expects a `message` prop containing the message data and an `onSuggestionClick` prop for handling source suggestion clicks.
+- The `MessageBubble` component expects a `message` prop containing the message details and an `onSuggestionClick` prop to handle click events on source suggestions.
 - The component uses conditional rendering to display different content based on whether the message is from the user or the bot.
 - Bot messages include additional information such as sources and document used, which are rendered conditionally.
-- The `ReactMarkdown` component is used to render markdown content within bot messages, with custom components for various markdown elements.
+- The `ReactMarkdown` component is used to render markdown content with custom components for different markdown elements.
+- The timestamp is formatted using the `formatTimestamp` function, which converts a timestamp into a more readable format.
 
 ### frontend/src/components/chat/MessageInput.jsx
 
@@ -2504,38 +2418,38 @@ This file defines the `MessageBubble` component, which renders individual chat m
 
 #### Module Overview
 
-This file defines the `MessageInput` component, which is a user interface element for inputting and sending messages in the chat application. It includes an input field and a send button, allowing users to type their messages and send them by pressing "Enter" or clicking the button.
+This file defines a `MessageInput` component that provides a user interface for inputting and sending messages in the chat application. It includes an input field and a send button, with functionality to handle message submission on both button click and "Enter" key press.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `useState` | Hook from React to manage state within functional components. |
+| `useState` | Hook from React for managing state within functional components. |
 | `Button` | A UI component for rendering buttons. |
 | `Input` | A UI component for rendering text input fields. |
 | `ScrollArea` | A UI component for creating scrollable areas. |
-| `Avatar` | A UI component for rendering avatars. |
+| `Avatar` | A UI component for rendering user avatars. |
 | `AvatarFallback` | A UI component for rendering fallback content for avatars. |
-| `ChevronRight` | An icon component from `lucide-react` for rendering a right-facing chevron. |
+| `ChevronRight` | An icon component from `lucide-react` for rendering a right-pointing chevron. |
 
 #### Classes
 
 | Class | Purpose | Key Methods |
 | --- | --- | --- |
-| `MessageInput` | Main chat message input component. | N/A |
+| `MessageInput` | Component for chat message input | N/A |
 
 #### Functions
 
 | Function | Parameters | Returns | Description |
 | --- | --- | --- | --- |
-| `handleKeyPress` | `e` (event) | `void` | Handles the key press event to send a message when "Enter" is pressed. |
+| `handleKeyPress` | `e` (event) | N/A | Handles the key press event to trigger message sending on "Enter" key press. |
 
 #### Notes
 
-- The `MessageInput` component listens for the "Enter" key to trigger the `onSendMessage` function.
-- The send button is disabled when the input value is empty or only contains whitespace.
-- The placeholder text in the input field guides users on what kind of messages they can send.
-- The `ChevronRight` icon is only visible on small screens, while the "Send" text is shown on larger screens.
+- The `MessageInput` component relies on props `inputValue`, `setInputValue`, and `onSendMessage` to function correctly.
+- The `handleKeyPress` function checks if the "Enter" key is pressed and calls `onSendMessage` if true.
+- The send button is disabled if the input value is empty or only contains whitespace.
+- The component provides a placeholder instruction for users to know what kind of messages they can send.
 
 ### frontend/src/components/chat/MessageList.jsx
 
@@ -2545,13 +2459,13 @@ This file defines the `MessageInput` component, which is a user interface elemen
 
 #### Module Overview
 
-This file defines the `MessageList` component, which renders a list of chat messages within a scrollable area. It maps through an array of messages and renders each one using the `MessageBubble` component, allowing for easy scrolling and message display.
+This file defines the `MessageList` component, which renders a list of chat messages. It uses `ScrollArea` for scrollable content and `MessageBubble` for individual messages.
 
 #### Dependencies
 
 | Import | Purpose |
 | --- | --- |
-| `ScrollArea` | Provides a scrollable container for the message list. |
+| `ScrollArea` | A scrollable area component from the UI library. |
 | `MessageBubble` | A component to display individual chat messages. |
 
 #### Classes
@@ -2568,12 +2482,7 @@ This file defines the `MessageList` component, which renders a list of chat mess
 
 #### Notes
 
-- The `ScrollArea` component ensures that the message list is scrollable if it exceeds the viewport height.
-- Each message is rendered with a unique `key` prop based on its `id` to optimize rendering performance.
-- The `onSuggestionClick` prop is passed to each `MessageBubble` to handle any interactive suggestions within the messages.
+- `messages` should be an array of objects, each with an `id` and `message` property.
+- `onSuggestionClick` is a callback function passed to each `MessageBubble` to handle suggestion clicks.
+- The `ScrollArea` component ensures the message list is scrollable when it overflows the viewport.
 
-## Code Improvements Applied
-
-- Added regression tests for high-risk files: `button.jsx`, `badge.jsx`, `input.jsx`.
-- Proposed extracting shared utility code into a dedicated module to reduce coupling.
-- Updated documentation by re-indexing and regenerating walkthroughs/diagrams.

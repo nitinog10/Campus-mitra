@@ -1,4 +1,6 @@
+```javascript
 import api from "./client.js";
+import { generateSessionId } from "../utils/sessionUtils.js";
 
 // Authentication API functions
 export const authAPI = {
@@ -79,11 +81,7 @@ export const chatAPI = {
   // Ask a question with conversation tracking
   askQuestion: async (question, conversationId = null) => {
     try {
-      const sessionId =
-        sessionStorage.getItem("sessionId") ||
-        `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      sessionStorage.setItem("sessionId", sessionId);
-
+      const sessionId = generateSessionId();
       const response = await api.post(
         "/chat/ask",
         {
@@ -118,11 +116,7 @@ export const chatAPI = {
   // Ask a question about a specific document
   askAboutDocument: async (question, documentId, conversationId = null) => {
     try {
-      const sessionId =
-        sessionStorage.getItem("sessionId") ||
-        `session_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`;
-      sessionStorage.setItem("sessionId", sessionId);
-
+      const sessionId = generateSessionId();
       const response = await api.post(
         "/chat/ask-document",
         {
@@ -178,3 +172,4 @@ export const chatAPI = {
     }
   },
 };
+```

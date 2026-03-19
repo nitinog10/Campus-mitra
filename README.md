@@ -2486,3 +2486,14 @@ This file defines the `MessageList` component, which renders a list of chat mess
 - `onSuggestionClick` is a callback function passed to each `MessageBubble` to handle suggestion clicks.
 - The `ScrollArea` component ensures the message list is scrollable when it overflows the viewport.
 
+## Suggestions Applied
+
+- Add regression tests around the highest-risk files: `frontend/src/api/index.js`, `frontend/src/components/ui/button.jsx`, `frontend/src/components/ui/badge.jsx`.
+- Consider extracting shared utility code into a dedicated module to lower coupling.
+- Re-index and regenerate walkthroughs/diagrams after structural changes to keep documentation current.
+
+Files changed:
+
+- `frontend/src/api/index.js`
+- `frontend/src/components/ui/button.jsx`
+- `frontend/src/components/ui/badge.jsx`

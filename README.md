@@ -92,3 +92,9 @@ Contributions are welcome! Please fork the repository and submit a pull request.
 ## License
 
 MIT
+
+## Code Improvements Applied
+
+- Added regression tests for high-risk files: `backend/src/models/index.js`, `nitinog10-Campus-mitra-d6be147/backend/src/models/index.js`, `nitinog10-Campus-mitra-d6be147/frontend/src/components/ui/badge.jsx`.
+- Proposed extracting shared utility code into a dedicated module to reduce coupling.
+- Updated documentation by re-indexing and regenerating walkthroughs/diagrams.

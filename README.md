@@ -98,3 +98,9 @@ MIT
 - Added regression tests for high-risk files: `backend/src/models/index.js`, `nitinog10-Campus-mitra-d6be147/backend/src/models/index.js`, `nitinog10-Campus-mitra-d6be147/frontend/src/components/ui/badge.jsx`.
 - Proposed extracting shared utility code into a dedicated module to reduce coupling.
 - Updated documentation by re-indexing and regenerating walkthroughs/diagrams.
+
+## Code Improvements Applied
+
+- Added regression tests for high-risk files: `frontend/src/api/index.js`, `frontend/src/components/ui/button.jsx`, `frontend/src/components/ui/input.jsx`.
+- Proposed extracting shared utility code into a dedicated module to reduce coupling.
+- Updated documentation by re-indexing and regenerating walkthroughs/diagrams.

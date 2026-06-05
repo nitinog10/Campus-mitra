@@ -1,6 +1,7 @@
 ```javascript
 import api from "./client.js";
 import { generateSessionId } from "../utils/sessionUtils.js";
+import { handleApiError } from "../utils/errorHandler.js";
 
 // Authentication API functions
 export const authAPI = {
@@ -10,7 +11,7 @@ export const authAPI = {
       const response = await api.post("/auth/login", credentials);
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: "Login failed" };
+      throw handleApiError(error, "Login failed");
     }
   },
 };
@@ -23,7 +24,7 @@ export const documentAPI = {
       const response = await api.get("/documents/announcements");
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: "Failed to fetch documents" };
+      throw handleApiError(error, "Failed to fetch documents");
     }
   },
 
@@ -37,7 +38,7 @@ export const documentAPI = {
       });
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: "Upload failed" };
+      throw handleApiError(error, "Upload failed");
     }
   },
 
@@ -49,7 +50,7 @@ export const documentAPI = {
       });
       return response;
     } catch (error) {
-      throw error.response?.data || { message: "Failed to view document" };
+      throw handleApiError(error, "Failed to view document");
     }
   },
 
@@ -59,7 +60,7 @@ export const documentAPI = {
       const response = await api.delete(`/documents/${id}`);
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: "Failed to delete document" };
+      throw handleApiError(error, "Failed to delete document");
     }
   },
 
@@ -69,9 +70,7 @@ export const documentAPI = {
       const response = await api.get(`/documents/${id}/status`);
       return response.data;
     } catch (error) {
-      throw (
-        error.response?.data || { message: "Failed to get document status" }
-      );
+      throw handleApiError(error, "Failed to get document status");
     }
   },
 };
@@ -103,13 +102,7 @@ export const chatAPI = {
         message: error.message,
         config: error.config?.url,
       });
-      throw (
-        error.response?.data || {
-          message: "Failed to get response",
-          status: error.response?.status,
-          details: error.message,
-        }
-      );
+      throw handleApiError(error, "Failed to get response");
     }
   },
 
@@ -132,7 +125,7 @@ export const chatAPI = {
       );
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: "Failed to get response" };
+      throw handleApiError(error, "Failed to get response");
     }
   },
 
@@ -144,9 +137,7 @@ export const chatAPI = {
       );
       return response.data;
     } catch (error) {
-      throw (
-        error.response?.data || { message: "Failed to fetch conversations" }
-      );
+      throw handleApiError(error, "Failed to fetch conversations");
     }
   },
 
@@ -156,7 +147,7 @@ export const chatAPI = {
       const response = await api.get(`/chat/conversations/${id}`);
       return response.data;
     } catch (error) {
-      throw error.response?.data || { message: "Failed to fetch conversation" };
+      throw handleApiError(error, "Failed to fetch conversation");
     }
   },
 
@@ -166,9 +157,7 @@ export const chatAPI = {
       const response = await api.delete(`/chat/conversations/${id}`);
       return response.data;
     } catch (error) {
-      throw (
-        error.response?.data || { message: "Failed to delete conversation" }
-      );
+      throw handleApiError(error, "Failed to delete conversation");
     }
   },
 };
